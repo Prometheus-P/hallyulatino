@@ -22,6 +22,10 @@ from app.infrastructure.repositories.supabase_watch_history_repository import (
 from app.application.interfaces.oauth_service import OAuthService
 from app.infrastructure.external.google_oauth_service import GoogleOAuthService
 from app.domain.repositories.watch_history_repository import WatchHistoryRepository
+from app.domain.repositories.favorite_repository import FavoriteRepository
+from app.infrastructure.repositories.supabase_favorite_repository import (
+    SupabaseFavoriteRepository,
+)
 
 # Bearer 토큰 인증 스키마
 security = HTTPBearer()
@@ -49,6 +53,12 @@ def get_watch_history_repository() -> WatchHistoryRepository:
     """시청 기록 리포지토리를 반환합니다."""
     client = get_supabase_client()
     return SupabaseWatchHistoryRepository(client)
+
+
+def get_favorite_repository() -> FavoriteRepository:
+    """즐겨찾기 리포지토리를 반환합니다."""
+    client = get_supabase_client()
+    return SupabaseFavoriteRepository(client)
 
 
 async def get_current_user(
