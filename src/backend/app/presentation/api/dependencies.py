@@ -16,8 +16,12 @@ from app.infrastructure.external.jwt_service import JWTServiceImpl
 from app.infrastructure.repositories.supabase_user_repository import (
     SupabaseUserRepository,
 )
+from app.infrastructure.repositories.supabase_watch_history_repository import (
+    SupabaseWatchHistoryRepository,
+)
 from app.application.interfaces.oauth_service import OAuthService
 from app.infrastructure.external.google_oauth_service import GoogleOAuthService
+from app.domain.repositories.watch_history_repository import WatchHistoryRepository
 
 # Bearer 토큰 인증 스키마
 security = HTTPBearer()
@@ -39,6 +43,12 @@ def get_google_oauth_service() -> OAuthService:
     """Google OAuth 서비스를 반환합니다."""
     settings = get_settings()
     return GoogleOAuthService(settings)
+
+
+def get_watch_history_repository() -> WatchHistoryRepository:
+    """시청 기록 리포지토리를 반환합니다."""
+    client = get_supabase_client()
+    return SupabaseWatchHistoryRepository(client)
 
 
 async def get_current_user(
