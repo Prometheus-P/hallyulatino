@@ -82,12 +82,16 @@ class Password:
             hashed_password: 저장된 해시 비밀번호
 
         Returns:
-            bool: 일치 여부
+            bool: 일치 여부 (잘못된 해시 형식인 경우 False 반환)
         """
-        # bcrypt는 최대 72바이트만 처리 가능
-        password_bytes = self.value.encode("utf-8")[:72]
-        hashed_bytes = hashed_password.encode("utf-8")
-        return bcrypt.checkpw(password_bytes, hashed_bytes)
+        try:
+            # bcrypt는 최대 72바이트만 처리 가능
+            password_bytes = self.value.encode("utf-8")[:72]
+            hashed_bytes = hashed_password.encode("utf-8")
+            return bcrypt.checkpw(password_bytes, hashed_bytes)
+        except (ValueError, TypeError):
+            # 잘못된 해시 형식인 경우 False 반환
+            return False
 
     @staticmethod
     def verify_hash(plain_password: str, hashed_password: str) -> bool:
@@ -98,12 +102,16 @@ class Password:
             hashed_password: 해시된 비밀번호
 
         Returns:
-            bool: 일치 여부
+            bool: 일치 여부 (잘못된 해시 형식인 경우 False 반환)
         """
-        # bcrypt는 최대 72바이트만 처리 가능
-        password_bytes = plain_password.encode("utf-8")[:72]
-        hashed_bytes = hashed_password.encode("utf-8")
-        return bcrypt.checkpw(password_bytes, hashed_bytes)
+        try:
+            # bcrypt는 최대 72바이트만 처리 가능
+            password_bytes = plain_password.encode("utf-8")[:72]
+            hashed_bytes = hashed_password.encode("utf-8")
+            return bcrypt.checkpw(password_bytes, hashed_bytes)
+        except (ValueError, TypeError):
+            # 잘못된 해시 형식인 경우 False 반환
+            return False
 
     def __repr__(self) -> str:
         """디버그용 문자열 표현 (보안상 값 숨김)."""

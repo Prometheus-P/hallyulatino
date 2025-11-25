@@ -182,6 +182,43 @@ class TestRegistrationAPI:
         data = response.json()
         assert data["detail"]["code"] == "EMAIL_ALREADY_EXISTS"
 
+    def test_register_with_long_password(
+        self,
+        client: TestClient,
+        mock_user_repository: AsyncMock,
+    ):
+        """72바이트를 초과하는 긴 비밀번호로도 회원가입이 가능해야 한다.
+
+        bcrypt는 72바이트까지만 처리하지만, 사용자 경험을 위해
+        긴 비밀번호도 허용하고 내부적으로 truncate합니다.
+        """
+        # 80자 비밀번호 (72바이트 초과)
+        long_password = "A" * 60 + "a1@secure!"  # 대문자, 소문자, 숫자, 특수문자 포함
+
+        mock_user_repository.exists_by_email.return_value = False
+        mock_user_repository.create.return_value = User(
+            id=uuid4(),
+            email=Email("longpass@example.com"),
+            nickname="LongPassUser",
+            country="MX",
+            preferred_language="es",
+        )
+
+        response = client.post(
+            "/v1/auth/register",
+            json={
+                "email": "longpass@example.com",
+                "password": long_password,
+                "nickname": "LongPassUser",
+                "country": "MX",
+                "preferred_language": "es",
+            },
+        )
+
+        assert response.status_code == 201
+        data = response.json()
+        assert data["email"] == "longpass@example.com"
+
 
 class TestLoginAPI:
     """로그인 API 테스트."""
@@ -209,6 +246,54 @@ class TestLoginAPI:
         assert "tokens" in data
         assert "user" in data
         assert data["tokens"]["token_type"] == "bearer"
+
+        # JWT 토큰 검증 강화: 토큰이 실제 JWT 형식인지 확인
+        access_token = data["tokens"]["access_token"]
+        refresh_token = data["tokens"]["refresh_token"]
+
+        # JWT는 3개의 부분(header.payload.signature)으로 구성됨
+        assert access_token and isinstance(access_token, str)
+        assert refresh_token and isinstance(refresh_token, str)
+        assert access_token.count(".") == 2, "access_token이 JWT 형식이어야 함"
+        assert refresh_token.count(".") == 2, "refresh_token이 JWT 형식이어야 함"
+
+    def test_login_with_long_password(
+        self,
+        client: TestClient,
+        mock_user_repository: AsyncMock,
+    ):
+        """72바이트를 초과하는 긴 비밀번호로도 로그인이 가능해야 한다.
+
+        등록 시 사용한 긴 비밀번호로 로그인 시 동일하게 truncate되어 검증됩니다.
+        """
+        long_password = "A" * 60 + "a1@secure!"
+
+        # 긴 비밀번호로 해시 생성
+        password_obj = Password(long_password)
+        hashed = password_obj.hash()
+
+        mock_user = User(
+            id=uuid4(),
+            email=Email("longpass@example.com"),
+            password_hash=hashed,
+            nickname="LongPassUser",
+            country="MX",
+            preferred_language="es",
+            is_active=True,
+        )
+        mock_user_repository.find_by_email.return_value = mock_user
+
+        response = client.post(
+            "/v1/auth/login",
+            json={
+                "email": "longpass@example.com",
+                "password": long_password,
+            },
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "tokens" in data
 
     def test_login_with_wrong_password(
         self,

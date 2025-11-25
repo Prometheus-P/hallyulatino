@@ -136,8 +136,11 @@ class TestUpdateUserProfile:
         with pytest.raises(ValidationError) as exc_info:
             UpdateProfileRequest(nickname="X")
 
-        # 에러 메시지 확인
-        assert "String should have at least 2 characters" in str(exc_info.value)
+        # 에러 타입 및 필드 확인 (메시지 텍스트 대신)
+        errors = exc_info.value.errors()
+        assert len(errors) == 1
+        assert errors[0]["loc"] == ("nickname",)
+        assert errors[0]["type"] == "string_too_short"
 
     @pytest.mark.asyncio
     async def test_should_update_avatar_url(self, mock_user_repository):

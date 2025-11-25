@@ -1,5 +1,6 @@
 """Content Use Cases - 콘텐츠 유스케이스."""
 
+from typing import Literal
 from uuid import UUID
 
 from app.application.dto.content import (
@@ -12,6 +13,9 @@ from app.application.dto.content import (
 from app.domain.entities.content import Content
 from app.domain.exceptions.content import ContentNotFoundError
 from app.domain.repositories.content_repository import ContentRepository
+
+# 콘텐츠 유형 타입 정의
+ContentType = Literal["drama", "movie", "mv", "variety"]
 
 
 class GetContentUseCase:
@@ -87,7 +91,7 @@ class ListContentsUseCase:
         self,
         page: int = 1,
         per_page: int = 20,
-        content_type: str | None = None,
+        content_type: ContentType | None = None,
         genre: str | None = None,
     ) -> ContentListResponse:
         """콘텐츠 목록을 조회합니다.
@@ -105,9 +109,9 @@ class ListContentsUseCase:
 
         if content_type:
             contents = await self._content_repository.find_by_type(
-                content_type, offset, per_page  # type: ignore
+                content_type, offset, per_page
             )
-            total = await self._content_repository.count_by_type(content_type)  # type: ignore
+            total = await self._content_repository.count_by_type(content_type)
         elif genre:
             contents = await self._content_repository.find_by_genre(
                 genre, offset, per_page
@@ -175,7 +179,7 @@ class CreateContentUseCase:
             production_company=request.production_company,
             season=request.season,
             episode=request.episode,
-            series_id=UUID(request.series_id) if request.series_id else None,
+            series_id=UUID(request.series_id) if request.series_id else None,  # handles empty string
             is_published=request.is_published,
         )
 
@@ -273,7 +277,7 @@ class UpdateContentUseCase:
         if request.episode is not None:
             content.episode = request.episode
         if request.series_id is not None:
-            content.series_id = UUID(request.series_id)
+            content.series_id = UUID(request.series_id) if request.series_id else None
         if request.is_published is not None:
             content.is_published = request.is_published
 

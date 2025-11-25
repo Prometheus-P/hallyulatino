@@ -168,7 +168,6 @@ export default function ProfileEditPage() {
                 width={64}
                 height={64}
                 className="w-16 h-16 rounded-full object-cover"
-                unoptimized
               />
             ) : (
               <div className="w-16 h-16 rounded-full bg-pink-600 flex items-center justify-center text-white text-xl font-bold">

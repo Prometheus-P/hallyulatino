@@ -61,7 +61,6 @@ export default function ProfilePage() {
                 width={80}
                 height={80}
                 className="w-20 h-20 rounded-full object-cover"
-                unoptimized
               />
             ) : (
               <div className="w-20 h-20 rounded-full bg-pink-600 flex items-center justify-center text-white text-2xl font-bold">
