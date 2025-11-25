@@ -1,0 +1,73 @@
+---
+const currentYear = new Date().getFullYear();
+
+const footerLinks = {
+  categorias: [
+    { name: 'K-Dramas', href: '/kdramas/' },
+    { name: 'K-Pop', href: '/kpop/' },
+    { name: 'Viajes a Corea', href: '/viajes/' },
+  ],
+  legal: [
+    { name: 'Sobre Nosotros', href: '/sobre-nosotros/' },
+    { name: 'Política de Privacidad', href: '/privacidad/' },
+  ],
+};
+---
+
+<footer class="bg-gray-900 text-gray-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand -->
+      <div class="col-span-1 md:col-span-2">
+        <a href="/" class="flex items-center space-x-2 mb-4">
+          <img src="/favicon.svg" alt="Hallyu Latino" class="h-10 w-10" />
+          <span class="text-2xl font-heading font-bold text-white">Hallyu Latino</span>
+        </a>
+        <p class="text-gray-400 max-w-md">
+          Tu portal de K-dramas, K-pop y cultura coreana en español.
+          Contenido actualizado sobre tus series y artistas favoritos de Corea del Sur.
+        </p>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <h3 class="text-white font-semibold mb-4">Categorías</h3>
+        <ul class="space-y-2">
+          {footerLinks.categorias.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-primary-400 transition-colors duration-200">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h3 class="text-white font-semibold mb-4">Legal</h3>
+        <ul class="space-y-2">
+          {footerLinks.legal.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-primary-400 transition-colors duration-200">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="mt-12 pt-8 border-t border-gray-800">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm">
+          &copy; {currentYear} Hallyu Latino. Todos los derechos reservados.
+        </p>
+        <p class="text-gray-500 text-sm mt-2 md:mt-0">
+          Hecho con amor para los fans del Hallyu
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

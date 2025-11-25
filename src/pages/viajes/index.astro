@@ -1,0 +1,16 @@
+---
+import CategoryLayout from '@/layouts/CategoryLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('viajes');
+const sortedArticles = articles.sort((a, b) =>
+  b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+---
+
+<CategoryLayout
+  title="Viajes a Corea"
+  description="Guías completas para viajar a Corea del Sur. Transporte, alojamiento, comida, lugares turísticos y consejos prácticos."
+  categorySlug="viajes"
+  articles={sortedArticles}
+/>

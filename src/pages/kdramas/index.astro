@@ -1,0 +1,16 @@
+---
+import CategoryLayout from '@/layouts/CategoryLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('kdrama');
+const sortedArticles = articles.sort((a, b) =>
+  b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+---
+
+<CategoryLayout
+  title="K-Dramas"
+  description="Descubre los mejores K-dramas coreanos. Reseñas, sinopsis, elenco y dónde ver tus doramas favoritos en español."
+  categorySlug="kdramas"
+  articles={sortedArticles}
+/>

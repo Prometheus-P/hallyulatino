@@ -1,0 +1,16 @@
+---
+import CategoryLayout from '@/layouts/CategoryLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('kpop');
+const sortedArticles = articles.sort((a, b) =>
+  b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+---
+
+<CategoryLayout
+  title="K-Pop"
+  description="Todo sobre K-pop: grupos, solistas, álbumes, noticias y más. Información actualizada sobre tus artistas favoritos de Corea del Sur."
+  categorySlug="kpop"
+  articles={sortedArticles}
+/>

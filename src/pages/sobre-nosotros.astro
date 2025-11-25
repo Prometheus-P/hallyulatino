@@ -1,0 +1,100 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { generateBreadcrumbSchema, SITE_CONFIG } from '@/utils/seo';
+
+const breadcrumbItems = [
+  { name: 'Inicio', url: '/' },
+  { name: 'Sobre Nosotros', url: '/sobre-nosotros/' },
+];
+
+const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+---
+
+<BaseLayout
+  title="Sobre Nosotros"
+  description="Conoce al equipo detrás de Hallyu Latino, tu portal de K-dramas, K-pop y cultura coreana en español para la comunidad hispana."
+  canonical={`${SITE_CONFIG.url}/sobre-nosotros/`}
+  schemas={[breadcrumbSchema]}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <article class="prose prose-lg max-w-none">
+      <h1>Sobre Nosotros</h1>
+
+      <p class="lead text-xl text-gray-600">
+        Bienvenido a <strong>Hallyu Latino</strong>, tu destino principal para todo lo relacionado
+        con el entretenimiento coreano en español.
+      </p>
+
+      <h2>Nuestra Misión</h2>
+      <p>
+        En Hallyu Latino, nos dedicamos a acercar la cultura pop coreana a la comunidad
+        hispanohablante de todo el mundo. Creemos que el idioma no debería ser una barrera
+        para disfrutar de los increíbles K-dramas, la música K-pop y la fascinante cultura
+        de Corea del Sur.
+      </p>
+
+      <h2>¿Qué Ofrecemos?</h2>
+      <ul>
+        <li>
+          <strong>Reseñas de K-Dramas:</strong> Análisis detallados de las series coreanas
+          más populares y los últimos estrenos.
+        </li>
+        <li>
+          <strong>Noticias de K-Pop:</strong> Información actualizada sobre tus grupos
+          y artistas favoritos.
+        </li>
+        <li>
+          <strong>Guías de Viaje:</strong> Todo lo que necesitas saber para planificar
+          tu viaje soñado a Corea del Sur.
+        </li>
+        <li>
+          <strong>Contenido en Español:</strong> Todo nuestro contenido está escrito
+          pensando en la comunidad latina y hispanohablante.
+        </li>
+      </ul>
+
+      <h2>Nuestro Equipo</h2>
+      <p>
+        Somos un equipo de apasionados por la cultura coreana con años de experiencia
+        consumiendo y analizando contenido de entretenimiento coreano. Nuestro objetivo
+        es compartir esta pasión con la comunidad hispanohablante de manera accesible,
+        entretenida e informativa.
+      </p>
+
+      <h2>Experiencia y Expertise</h2>
+      <p>
+        Nuestro equipo editorial cuenta con amplia experiencia en:
+      </p>
+      <ul>
+        <li>Análisis de series y dramas asiáticos desde 2015</li>
+        <li>Seguimiento de la industria del K-pop desde sus inicios</li>
+        <li>Viajes frecuentes a Corea del Sur</li>
+        <li>Conocimiento del idioma coreano</li>
+        <li>Conexiones con la industria del entretenimiento coreano</li>
+      </ul>
+
+      <h2>Contacto</h2>
+      <p>
+        ¿Tienes preguntas, sugerencias o quieres colaborar con nosotros?
+        Nos encantaría escucharte. Puedes contactarnos a través de nuestras
+        redes sociales o enviarnos un correo electrónico.
+      </p>
+
+      <div class="bg-gray-50 rounded-lg p-6 not-prose mt-8">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Información de Contacto</h3>
+        <ul class="space-y-2 text-gray-600">
+          <li>Email: contacto@hallyulatino.com</li>
+          <li>Twitter: @hallyulatino</li>
+        </ul>
+      </div>
+
+      <p class="mt-8">
+        Gracias por ser parte de la comunidad Hallyu Latino. ¡Esperamos que disfrutes
+        nuestro contenido tanto como nosotros disfrutamos creándolo!
+      </p>
+    </article>
+  </div>
+</BaseLayout>

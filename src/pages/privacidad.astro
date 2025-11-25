@@ -1,0 +1,131 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { generateBreadcrumbSchema, SITE_CONFIG } from '@/utils/seo';
+
+const breadcrumbItems = [
+  { name: 'Inicio', url: '/' },
+  { name: 'Política de Privacidad', url: '/privacidad/' },
+];
+
+const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+
+const lastUpdated = '25 de noviembre de 2025';
+---
+
+<BaseLayout
+  title="Política de Privacidad"
+  description="Política de privacidad de Hallyu Latino. Conoce cómo recopilamos, usamos y protegemos tu información personal."
+  canonical={`${SITE_CONFIG.url}/privacidad/`}
+  schemas={[breadcrumbSchema]}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <article class="prose prose-lg max-w-none">
+      <h1>Política de Privacidad</h1>
+
+      <p class="text-sm text-gray-500">
+        Última actualización: {lastUpdated}
+      </p>
+
+      <p>
+        En Hallyu Latino ("nosotros", "nuestro" o "el sitio"), respetamos tu privacidad
+        y nos comprometemos a proteger tu información personal. Esta Política de Privacidad
+        explica cómo recopilamos, usamos y protegemos la información que nos proporcionas
+        cuando visitas nuestro sitio web.
+      </p>
+
+      <h2>1. Información que Recopilamos</h2>
+
+      <h3>1.1 Información de Navegación</h3>
+      <p>
+        Cuando visitas nuestro sitio, podemos recopilar automáticamente cierta información
+        sobre tu dispositivo, incluyendo información sobre tu navegador web, dirección IP,
+        zona horaria y algunas de las cookies instaladas en tu dispositivo.
+      </p>
+
+      <h3>1.2 Cookies y Tecnologías Similares</h3>
+      <p>
+        Utilizamos cookies y tecnologías similares para mejorar tu experiencia en nuestro
+        sitio. Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo.
+        Puedes configurar tu navegador para rechazar todas las cookies o para indicar cuándo
+        se envía una cookie.
+      </p>
+
+      <h2>2. Uso de la Información</h2>
+      <p>Utilizamos la información recopilada para:</p>
+      <ul>
+        <li>Proporcionar, mantener y mejorar nuestro sitio web</li>
+        <li>Analizar cómo los usuarios interactúan con nuestro contenido</li>
+        <li>Mostrar publicidad relevante</li>
+        <li>Detectar y prevenir fraudes y otros problemas de seguridad</li>
+      </ul>
+
+      <h2>3. Publicidad</h2>
+      <p>
+        Nuestro sitio puede mostrar anuncios de terceros, incluyendo Google AdSense.
+        Estos servicios pueden utilizar cookies y tecnologías similares para mostrar
+        anuncios basados en tus visitas anteriores a nuestro sitio u otros sitios web.
+      </p>
+      <p>
+        Puedes optar por no recibir publicidad personalizada visitando la
+        <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">
+          configuración de anuncios de Google
+        </a>.
+      </p>
+
+      <h2>4. Análisis Web</h2>
+      <p>
+        Utilizamos Cloudflare Web Analytics para comprender cómo los visitantes
+        interactúan con nuestro sitio. Esta herramienta respeta la privacidad del
+        usuario y no utiliza cookies de seguimiento.
+      </p>
+
+      <h2>5. Enlaces a Terceros</h2>
+      <p>
+        Nuestro sitio puede contener enlaces a otros sitios web. No somos responsables
+        de las prácticas de privacidad de estos sitios externos. Te recomendamos leer
+        las políticas de privacidad de cualquier sitio web que visites.
+      </p>
+
+      <h2>6. Seguridad de los Datos</h2>
+      <p>
+        Implementamos medidas de seguridad apropiadas para proteger tu información
+        personal contra acceso no autorizado, alteración, divulgación o destrucción.
+      </p>
+
+      <h2>7. Tus Derechos</h2>
+      <p>Dependiendo de tu ubicación, puedes tener ciertos derechos respecto a tu información personal, incluyendo:</p>
+      <ul>
+        <li>Derecho a acceder a tu información</li>
+        <li>Derecho a rectificar información inexacta</li>
+        <li>Derecho a eliminar tu información</li>
+        <li>Derecho a oponerte al procesamiento</li>
+        <li>Derecho a la portabilidad de datos</li>
+      </ul>
+
+      <h2>8. Menores de Edad</h2>
+      <p>
+        Nuestro sitio no está dirigido a menores de 13 años. No recopilamos
+        intencionalmente información personal de niños menores de 13 años.
+      </p>
+
+      <h2>9. Cambios a Esta Política</h2>
+      <p>
+        Podemos actualizar esta Política de Privacidad de vez en cuando.
+        Te notificaremos cualquier cambio publicando la nueva política en esta página
+        y actualizando la fecha de "última actualización".
+      </p>
+
+      <h2>10. Contacto</h2>
+      <p>
+        Si tienes preguntas sobre esta Política de Privacidad, puedes contactarnos:
+      </p>
+      <ul>
+        <li>Email: privacidad@hallyulatino.com</li>
+        <li>A través de nuestra página de <a href="/sobre-nosotros/">Sobre Nosotros</a></li>
+      </ul>
+    </article>
+  </div>
+</BaseLayout>

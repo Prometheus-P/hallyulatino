@@ -1,0 +1,99 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import AdSlot from '@/components/AdSlot.astro';
+import { generateBreadcrumbSchema, SITE_CONFIG } from '@/utils/seo';
+
+interface Article {
+  slug: string;
+  data: {
+    title: string;
+    description: string;
+    image: string;
+    imageAlt: string;
+    publishDate: Date;
+  };
+}
+
+interface Props {
+  title: string;
+  description: string;
+  categorySlug: string;
+  articles: Article[];
+}
+
+const { title, description, categorySlug, articles } = Astro.props;
+
+const currentUrl = `/${categorySlug}/`;
+
+const breadcrumbItems = [
+  { name: 'Inicio', url: '/' },
+  { name: title, url: currentUrl },
+];
+
+const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`${SITE_CONFIG.url}${currentUrl}`}
+  schemas={[breadcrumbSchema]}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Breadcrumb -->
+    <Breadcrumb items={breadcrumbItems} />
+
+    <!-- Category Header -->
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        {title}
+      </h1>
+      <p class="text-lg text-gray-600 max-w-3xl">
+        {description}
+      </p>
+    </header>
+
+    <!-- Header Ad -->
+    <div class="mb-8">
+      <AdSlot slot="header" />
+    </div>
+
+    <!-- Articles Grid -->
+    {articles.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {articles.map((article, index) => (
+          <>
+            <ArticleCard
+              title={article.data.title}
+              description={article.data.description}
+              image={article.data.image}
+              imageAlt={article.data.imageAlt}
+              slug={`/${categorySlug}/${article.slug.replace('es/', '')}`}
+              publishDate={article.data.publishDate}
+            />
+            {/* Insert in-article ad after every 6 articles */}
+            {(index + 1) % 6 === 0 && index !== articles.length - 1 && (
+              <div class="col-span-full my-4">
+                <AdSlot slot="in-article" />
+              </div>
+            )}
+          </>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">No hay artículos disponibles en esta categoría.</p>
+        <a href="/" class="mt-4 inline-block text-primary-600 hover:text-primary-700 font-medium">
+          Volver al inicio
+        </a>
+      </div>
+    )}
+
+    <!-- Footer Ad -->
+    <div class="mt-8">
+      <AdSlot slot="footer" />
+    </div>
+  </div>
+</BaseLayout>

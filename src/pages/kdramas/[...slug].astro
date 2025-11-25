@@ -1,0 +1,123 @@
+---
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('kdrama');
+  return articles.map((article) => ({
+    params: { slug: article.slug.replace('es/', '') },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'kdrama'>;
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await article.render();
+
+// Get related articles (same genre or network)
+const allArticles = await getCollection('kdrama');
+const relatedArticles = allArticles
+  .filter((a) => a.slug !== article.slug)
+  .filter((a) =>
+    a.data.genre.some((g) => article.data.genre.includes(g)) ||
+    a.data.network === article.data.network
+  )
+  .slice(0, 3)
+  .map((a) => ({
+    title: a.data.title,
+    slug: a.slug.replace('es/', ''),
+    image: a.data.image,
+    description: a.data.description,
+  }));
+
+const statusLabels = {
+  emision: 'En emisión',
+  finalizado: 'Finalizado',
+  proximo: 'Próximamente',
+};
+---
+
+<ArticleLayout
+  title={article.data.title}
+  description={article.data.description}
+  image={article.data.image}
+  imageAlt={article.data.imageAlt}
+  publishDate={article.data.publishDate}
+  updatedDate={article.data.updatedDate}
+  author={article.data.author}
+  category="kdrama"
+  categorySlug="kdramas"
+  categoryLabel="K-Dramas"
+  headings={headings}
+  relatedArticles={relatedArticles}
+>
+  <!-- Drama Info Box -->
+  <div class="bg-gray-50 rounded-lg p-6 mb-8 not-prose">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Información del Drama</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <p class="text-sm text-gray-500">Título original</p>
+        <p class="font-medium text-gray-900">{article.data.titleKorean}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Cadena</p>
+        <p class="font-medium text-gray-900">{article.data.network}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Episodios</p>
+        <p class="font-medium text-gray-900">{article.data.episodes}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Estado</p>
+        <span class:list={[
+          'inline-block px-2 py-1 rounded text-sm font-medium',
+          article.data.status === 'emision' && 'bg-green-100 text-green-800',
+          article.data.status === 'finalizado' && 'bg-gray-100 text-gray-800',
+          article.data.status === 'proximo' && 'bg-yellow-100 text-yellow-800',
+        ]}>
+          {statusLabels[article.data.status]}
+        </span>
+      </div>
+      <div class="md:col-span-2">
+        <p class="text-sm text-gray-500">Género</p>
+        <div class="flex flex-wrap gap-2 mt-1">
+          {article.data.genre.map((g) => (
+            <span class="bg-primary-100 text-primary-700 px-2 py-1 rounded text-sm">
+              {g}
+            </span>
+          ))}
+        </div>
+      </div>
+      {article.data.rating && (
+        <div>
+          <p class="text-sm text-gray-500">Calificación</p>
+          <p class="font-medium text-gray-900">
+            <span class="text-yellow-500">★</span> {article.data.rating}/10
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Cast Section -->
+  {article.data.cast.length > 0 && (
+    <div class="mb-8 not-prose">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Reparto Principal</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {article.data.cast.map((member) => (
+          <div class="bg-white border border-gray-200 rounded-lg p-4">
+            <p class="font-medium text-gray-900">{member.name}</p>
+            <p class="text-sm text-gray-500">{member.nameKorean}</p>
+            <p class="text-sm text-primary-600 mt-1">como {member.role}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Article Content -->
+  <Content />
+</ArticleLayout>

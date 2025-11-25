@@ -1,0 +1,31 @@
+{
+  "name": "hallyulatino",
+  "version": "1.0.0",
+  "description": "K-Culture information site for Spanish-speaking audiences",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "keywords": [
+    "kdrama",
+    "kpop",
+    "korean-culture",
+    "astro",
+    "spanish"
+  ],
+  "author": "Hallyu Latino",
+  "license": "ISC",
+  "packageManager": "pnpm@10.23.0",
+  "dependencies": {
+    "@astrojs/mdx": "^3.1.9",
+    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/tailwind": "^6.0.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "astro": "^4.16.19",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.4.18"
+  }
+}
