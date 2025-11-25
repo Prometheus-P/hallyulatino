@@ -1,12 +1,6 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { Providers } from '@/components/layout/Providers'
 import '@/styles/globals.css'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
 
 export const metadata: Metadata = {
   title: {
@@ -32,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={inter.variable}>
-      <body className="min-h-screen bg-gray-50">
+    <html lang="es">
+      <body className="min-h-screen bg-gray-50 font-sans">
         <Providers>
           {children}
         </Providers>

@@ -4,14 +4,14 @@
 
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams()
   const registered = searchParams.get('registered')
   const { login, loginWithGoogle, isLoading, error } = useAuth()
@@ -183,5 +183,27 @@ export default function LoginPage() {
         </Link>
       </p>
     </div>
+  )
+}
+
+function LoginLoading() {
+  return (
+    <div className="card">
+      <div className="animate-pulse space-y-4">
+        <div className="h-8 bg-gray-200 rounded w-1/2 mx-auto" />
+        <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto" />
+        <div className="h-10 bg-gray-200 rounded" />
+        <div className="h-10 bg-gray-200 rounded" />
+        <div className="h-10 bg-gray-200 rounded" />
+      </div>
+    </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginLoading />}>
+      <LoginForm />
+    </Suspense>
   )
 }
