@@ -1,7 +1,19 @@
 version: '3.8'
 
 # ═══════════════════════════════════════════════════════════════
-# HallyuLatino Docker Compose - 로컬 개발 환경
+# HallyuLatino Docker Compose - 로컬 개발 환경 (MVP 최적화)
+# ═══════════════════════════════════════════════════════════════
+#
+# 주요 변경 (ADR-0002):
+# - Celery/RabbitMQ → n8n 워크플로우 자동화
+# - Elasticsearch 제거 → PostgreSQL FTS 사용
+# - pgvector 확장 추가 (벡터 검색)
+#
+# 프로덕션 환경:
+# - Frontend: Vercel
+# - Backend: Railway
+# - Database: Supabase
+# - Storage: Cloudflare R2
 # ═══════════════════════════════════════════════════════════════
 
 services:
@@ -22,6 +34,8 @@ services:
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
       - NEXT_TELEMETRY_DISABLED=1
     depends_on:
       - backend
@@ -30,7 +44,7 @@ services:
     restart: unless-stopped
 
   # ─────────────────────────────────────────────────────────────
-  # 백엔드 (FastAPI)
+  # 백엔드 (FastAPI - 모놀리스)
   # ─────────────────────────────────────────────────────────────
   backend:
     build:
@@ -44,12 +58,20 @@ services:
     environment:
       - APP_ENV=development
       - DEBUG=true
+      # 로컬 PostgreSQL (프로덕션: Supabase)
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/hallyulatino
+      # 로컬 Redis (프로덕션: Upstash)
       - REDIS_URL=redis://redis:6379/0
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - CELERY_BROKER_URL=redis://redis:6379/1
+      # Supabase 설정 (인증용)
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      # 보안 키
       - SECRET_KEY=dev-secret-key-change-in-production
-      - JWT_SECRET_KEY=dev-jwt-secret-change-in-production
+      # 외부 서비스
+      - DEEPL_API_KEY=${DEEPL_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # n8n 웹훅 URL
+      - N8N_WEBHOOK_URL=http://n8n:5678/webhook
     depends_on:
       postgres:
         condition: service_healthy
@@ -61,32 +83,52 @@ services:
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
   # ─────────────────────────────────────────────────────────────
-  # AI Worker (Celery)
+  # n8n (워크플로우 자동화) - Celery 대체
   # ─────────────────────────────────────────────────────────────
-  worker:
-    build:
-      context: ./src/worker
-      dockerfile: Dockerfile.dev
-    container_name: hallyulatino-worker
-    volumes:
-      - ./src/worker:/app
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: hallyulatino-n8n
+    ports:
+      - "5678:5678"
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      # 기본 설정
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      # 데이터베이스 (워크플로우 저장)
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=postgres
+      - DB_POSTGRESDB_PASSWORD=postgres
+      # 인증 (개발 환경)
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin
+      # 시간대
+      - GENERIC_TIMEZONE=Asia/Seoul
+      - TZ=Asia/Seoul
+      # 외부 서비스 API 키 (Credentials에서 사용)
+      - DEEPL_API_KEY=${DEEPL_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/workflows:/home/node/workflows:ro
     depends_on:
-      - redis
+      postgres:
+        condition: service_healthy
     networks:
       - hallyulatino-network
     restart: unless-stopped
-    command: celery -A worker worker --loglevel=info
 
   # ─────────────────────────────────────────────────────────────
-  # PostgreSQL
+  # PostgreSQL (with pgvector)
   # ─────────────────────────────────────────────────────────────
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     container_name: hallyulatino-postgres
     ports:
       - "5432:5432"
@@ -96,7 +138,8 @@ services:
       POSTGRES_DB: hallyulatino
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./scripts/init-n8n-db.sql:/docker-entrypoint-initdb.d/02-n8n.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -107,7 +150,7 @@ services:
     restart: unless-stopped
 
   # ─────────────────────────────────────────────────────────────
-  # Redis
+  # Redis (캐시/세션 - 프로덕션: Upstash)
   # ─────────────────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
@@ -122,26 +165,7 @@ services:
     restart: unless-stopped
 
   # ─────────────────────────────────────────────────────────────
-  # Elasticsearch
-  # ─────────────────────────────────────────────────────────────
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
-    container_name: hallyulatino-elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - hallyulatino-network
-    restart: unless-stopped
-
-  # ─────────────────────────────────────────────────────────────
-  # MinIO (S3 호환 스토리지)
+  # MinIO (로컬 S3 - 프로덕션: Cloudflare R2)
   # ─────────────────────────────────────────────────────────────
   minio:
     image: minio/minio:latest
@@ -180,9 +204,9 @@ volumes:
     driver: local
   redis_data:
     driver: local
-  elasticsearch_data:
-    driver: local
   minio_data:
+    driver: local
+  n8n_data:
     driver: local
 
 # ─────────────────────────────────────────────────────────────────
