@@ -70,12 +70,12 @@ Next.js 14  •  TypeScript 5  •  Tailwind CSS 3  •  Zustand  •  React Que
 
 ### Backend
 ```
-Python 3.12  •  FastAPI  •  SQLAlchemy 2  •  Celery  •  Redis
+Python 3.12  •  FastAPI  •  Pydantic 2  •  Supabase  •  PyJWT
 ```
 
 ### Database
 ```
-PostgreSQL 16  •  Redis 7  •  Elasticsearch 8  •  Pinecone
+Supabase (PostgreSQL)  •  Redis 7  •  Elasticsearch 8
 ```
 
 ### AI/ML

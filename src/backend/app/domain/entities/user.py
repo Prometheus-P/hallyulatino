@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from app.domain.entities.base import Entity
+from app.domain.entities.base import Entity, utc_now
 from app.domain.value_objects.email import Email
 from app.domain.value_objects.password import Password
 
@@ -89,22 +89,22 @@ class User(Entity):
             password: 설정할 비밀번호 값 객체
         """
         self.password_hash = password.hash()
-        self.updated_at = datetime.utcnow()
+        self.updated_at = utc_now()
 
     def activate(self) -> None:
         """사용자를 활성화합니다."""
         self.is_active = True
-        self.updated_at = datetime.utcnow()
+        self.updated_at = utc_now()
 
     def deactivate(self) -> None:
         """사용자를 비활성화합니다."""
         self.is_active = False
-        self.updated_at = datetime.utcnow()
+        self.updated_at = utc_now()
 
     def verify_email(self) -> None:
         """이메일 인증을 완료합니다."""
         self.is_verified = True
-        self.updated_at = datetime.utcnow()
+        self.updated_at = utc_now()
 
     def is_oauth_user(self) -> bool:
         """OAuth 사용자인지 확인합니다."""

@@ -1,11 +1,13 @@
 """Content DTOs - 콘텐츠 데이터 전송 객체."""
 
 from typing import Literal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ContentResponse(BaseModel):
     """콘텐츠 응답 DTO."""
+
+    model_config = ConfigDict(from_attributes=True)
 
     id: str
     title: str
@@ -32,12 +34,11 @@ class ContentResponse(BaseModel):
     created_at: str
     updated_at: str
 
-    class Config:
-        from_attributes = True
-
 
 class ContentSummaryResponse(BaseModel):
     """콘텐츠 요약 응답 DTO (목록용)."""
+
+    model_config = ConfigDict(from_attributes=True)
 
     id: str
     title: str
@@ -49,9 +50,6 @@ class ContentSummaryResponse(BaseModel):
     thumbnail_url: str
     rating: float
     view_count: int
-
-    class Config:
-        from_attributes = True
 
 
 class ContentListResponse(BaseModel):

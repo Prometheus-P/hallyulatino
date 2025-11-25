@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from app.domain.entities.base import Entity
+from app.domain.entities.base import Entity, utc_now
 
 
 @dataclass
@@ -139,7 +139,7 @@ class Content(Entity):
     def increment_view_count(self) -> None:
         """조회수를 증가시킵니다."""
         self.view_count += 1
-        self.updated_at = datetime.utcnow()
+        self.updated_at = utc_now()
 
     def update_rating(self, new_rating: float) -> None:
         """평점을 업데이트합니다.
@@ -149,17 +149,17 @@ class Content(Entity):
         """
         if 1 <= new_rating <= 5:
             self.rating = new_rating
-            self.updated_at = datetime.utcnow()
+            self.updated_at = utc_now()
 
     def publish(self) -> None:
         """콘텐츠를 게시합니다."""
         self.is_published = True
-        self.updated_at = datetime.utcnow()
+        self.updated_at = utc_now()
 
     def unpublish(self) -> None:
         """콘텐츠를 비게시 처리합니다."""
         self.is_published = False
-        self.updated_at = datetime.utcnow()
+        self.updated_at = utc_now()
 
     def is_series(self) -> bool:
         """시리즈 에피소드인지 확인합니다."""
