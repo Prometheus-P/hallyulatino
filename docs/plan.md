@@ -1,10 +1,10 @@
 ---
 title: HallyuLatino TDD 개발 계획
-version: 1.0.0
+version: 1.5.0
 status: Active
 owner: @hallyulatino-team
 created: 2025-11-25
-updated: 2025-11-25
+updated: 2025-11-27
 reviewers: []
 language: Korean (한국어)
 ---
@@ -13,10 +13,15 @@ language: Korean (한국어)
 
 > 이 문서는 실시간으로 업데이트됩니다. 각 기능 구현 전에 테스트 케이스를 먼저 정의합니다.
 
+## 현재 버전
+
+**v0.4.0-alpha.1** - Phase 4 콘텐츠 서비스 기초 구현
+
 ## 변경 이력 (Changelog)
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
+| 1.5.0 | 2025-11-27 | @claude | 버전 관리 체계 정립, CHANGELOG.md 추가, 태그 생성 (v0.1.0~v0.4.0-alpha.1) |
 | 1.4.1 | 2025-11-25 | @claude | 코드 리팩토링 (Pydantic v2, timezone-aware datetime, __init__.py exports) |
 | 1.4.0 | 2025-11-25 | @claude | Phase 4 콘텐츠 서비스 시작 (도메인 모델, 테스트 14개, Use Cases) |
 | 1.3.1 | 2025-11-25 | @claude | 테스트 문제 해결 (bcrypt, 통합 테스트), 프론트엔드 개선 |
@@ -673,21 +678,33 @@ describe('Authentication Flow', () => {
 
 | 영역 | 현재 | 목표 | 테스트 수 |
 |------|------|------|-----------|
-| 백엔드 Unit | 85%+ | 80% | 53개 통과 |
+| 백엔드 Unit | 85%+ | 80% | 67개 통과 |
 | 백엔드 Integration | 60%+ | 60% | 14개 통과 |
-| 프론트엔드 Unit | 0% | 70% | 0개 |
-| E2E | 0% | Critical Path 100% | 0개 |
+| 프론트엔드 Unit | 10% | 70% | 5개 |
+| E2E | 10% | Critical Path 100% | 3개 |
 
-**총 테스트: 67개 통과** (2025-11-25 기준)
+**총 테스트: 81개 통과** (2025-11-27 기준)
 
 ---
 
 ## 🔗 관련 문서
 
-- [CONTEXT.md](./CONTEXT.md) - 프로젝트 컨텍스트
-- [docs/specs/PRD.md](./docs/specs/PRD.md) - 제품 요구사항
-- [docs/guides/TDD_GUIDE.md](./docs/guides/TDD_GUIDE.md) - TDD 가이드
-- [docs/guides/TEST_STRATEGY_GUIDE.md](./docs/guides/TEST_STRATEGY_GUIDE.md) - 테스트 전략
+- [CONTEXT.md](../CONTEXT.md) - 프로젝트 컨텍스트
+- [CHANGELOG.md](../CHANGELOG.md) - 변경 이력
+- [docs/specs/PRD.md](./specs/PRD.md) - 제품 요구사항
+- [docs/guides/TDD_GUIDE.md](./guides/TDD_GUIDE.md) - TDD 가이드
+- [docs/guides/VERSIONING_GUIDE.md](./guides/VERSIONING_GUIDE.md) - 버전 관리 가이드
+
+---
+
+## 🏷️ 버전 태그
+
+| 버전 | Phase | 날짜 | 설명 |
+|------|-------|------|------|
+| v0.1.0 | Phase 1 | 2025-11-25 | 인프라 설정 완료 |
+| v0.2.0 | Phase 2 | 2025-11-25 | 인증 서비스 완료 |
+| v0.3.0 | Phase 3 | 2025-11-25 | 사용자 서비스 완료 |
+| v0.4.0-alpha.1 | Phase 4 | 2025-11-27 | 콘텐츠 서비스 기초 구현 |
 
 ---
 
