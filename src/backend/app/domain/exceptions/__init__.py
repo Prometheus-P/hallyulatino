@@ -13,6 +13,11 @@ from app.domain.exceptions.auth import (
     UserNotFoundError,
     EmailAlreadyExistsError,
 )
+from app.domain.exceptions.content import (
+    ContentNotFoundError,
+    ContentNotViewableError,
+    InvalidContentDataError,
+)
 
 __all__ = [
     "DomainError",
@@ -24,4 +29,7 @@ __all__ = [
     "TokenExpiredError",
     "UserNotFoundError",
     "EmailAlreadyExistsError",
+    "ContentNotFoundError",
+    "ContentNotViewableError",
+    "InvalidContentDataError",
 ]

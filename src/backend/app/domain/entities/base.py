@@ -1,9 +1,14 @@
 """Base Entity - 모든 엔티티의 기본 클래스."""
 
 from abc import ABC
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 from uuid import UUID, uuid4
+
+
+def utc_now() -> datetime:
+    """현재 UTC 시간을 반환합니다 (timezone-aware)."""
+    return datetime.now(timezone.utc)
 
 
 class Entity(ABC):
@@ -22,8 +27,8 @@ class Entity(ABC):
         updated_at: datetime | None = None,
     ) -> None:
         self.id = id or uuid4()
-        self.created_at = created_at or datetime.utcnow()
-        self.updated_at = updated_at or datetime.utcnow()
+        self.created_at = created_at or utc_now()
+        self.updated_at = updated_at or utc_now()
 
     def __eq__(self, other: Any) -> bool:
         """동등성 비교 (ID 기반)."""

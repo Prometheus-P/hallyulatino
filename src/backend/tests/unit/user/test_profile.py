@@ -129,24 +129,18 @@ class TestUpdateUserProfile:
         self, mock_user_repository
     ):
         """부적절한 닉네임으로 프로필 업데이트 시 실패해야 한다."""
-        # Given
-        user_id = UUID("12345678-1234-1234-1234-123456789012")
-        user = User(
-            id=user_id,
-            email=Email("test@example.com"),
-            nickname="OldNickname",
-        )
-        mock_user_repository.find_by_id = AsyncMock(return_value=user)
+        # Given: 닉네임이 너무 짧음 (1자) - Pydantic에서 검증됨
+        from pydantic import ValidationError
 
-        use_case = UpdateUserProfileUseCase(mock_user_repository)
+        # When & Then: Pydantic ValidationError 발생
+        with pytest.raises(ValidationError) as exc_info:
+            UpdateProfileRequest(nickname="X")
 
-        # 닉네임이 너무 짧음 (1자)
-        request = UpdateProfileRequest(nickname="X")
-
-        # When & Then
-        from app.domain.exceptions.validation import InvalidNicknameError
-        with pytest.raises(InvalidNicknameError):
-            await use_case.execute(user_id, request)
+        # 에러 타입 및 필드 확인 (메시지 텍스트 대신)
+        errors = exc_info.value.errors()
+        assert len(errors) == 1
+        assert errors[0]["loc"] == ("nickname",)
+        assert errors[0]["type"] == "string_too_short"
 
     @pytest.mark.asyncio
     async def test_should_update_avatar_url(self, mock_user_repository):

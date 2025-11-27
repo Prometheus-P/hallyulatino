@@ -5,6 +5,7 @@ from uuid import UUID
 
 from supabase import Client
 
+from app.domain.entities.base import utc_now
 from app.domain.entities.user import User
 from app.domain.repositories.user_repository import UserRepository
 from app.domain.value_objects.email import Email
@@ -86,7 +87,7 @@ class SupabaseUserRepository(UserRepository):
             "avatar_url": user.avatar_url,
             "oauth_provider": user.oauth_provider,
             "oauth_id": user.oauth_id,
-            "updated_at": datetime.utcnow().isoformat(),
+            "updated_at": utc_now().isoformat(),
         }
 
         result = (

@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useProfile } from '@/hooks/useProfile'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
@@ -161,9 +162,11 @@ export default function ProfileEditPage() {
           </label>
           <div className="flex items-center gap-4">
             {profile?.avatarUrl ? (
-              <img
+              <Image
                 src={profile.avatarUrl}
                 alt={profile.nickname}
+                width={64}
+                height={64}
                 className="w-16 h-16 rounded-full object-cover"
               />
             ) : (
