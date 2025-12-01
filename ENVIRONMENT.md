@@ -1,714 +1,522 @@
 ---
-title: HallyuLatino 개발 환경 설정 가이드
+title: HallyuLatino - Environment Setup Guide
 version: 1.0.0
-status: Draft
+status: Approved
 owner: @hallyulatino-team
-created: 2025-11-25
-updated: 2025-11-25
+created: 2024-11-28
+updated: 2024-11-28
 reviewers: []
-language: Korean (한국어)
 ---
 
-# ENVIRONMENT.md - 개발 환경 설정 가이드
+# ENVIRONMENT.md - 환경 설정 가이드
+
+> **이 문서는 개발 환경 설정에 필요한 모든 정보를 제공합니다.**
+> 새 개발자 온보딩 및 CI/CD 환경 구성 시 참조하세요.
+
+---
 
 ## 변경 이력 (Changelog)
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
-| 1.0.0 | 2025-11-25 | @hallyulatino-team | 최초 작성 |
-
-## 관련 문서 (Related Documents)
-
-- [CONTEXT.md](./CONTEXT.md) - 프로젝트 컨텍스트
-- [README.md](./README.md) - 빠른 시작 가이드
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - 기여 가이드
+| 1.0.0 | 2024-11-28 | @claude | 최초 작성 |
 
 ---
 
-## 1. 사전 요구사항 (Prerequisites)
+## 1. 시스템 요구사항
 
 ### 1.1 필수 소프트웨어
 
-| 소프트웨어 | 최소 버전 | 권장 버전 | 확인 명령어 |
-|------------|-----------|-----------|-------------|
-| **Git** | 2.30+ | 2.43+ | `git --version` |
-| **Node.js** | 18.x | 20.x LTS | `node --version` |
-| **npm** | 9.x | 10.x | `npm --version` |
-| **Python** | 3.11+ | 3.12.x | `python --version` |
-| **Docker** | 24.x | 25.x | `docker --version` |
-| **Docker Compose** | 2.20+ | 2.24+ | `docker compose version` |
+| 소프트웨어 | 최소 버전 | 권장 버전 | 설치 확인 |
+|-----------|----------|----------|----------|
+| Node.js | 18.0.0 | 20.x LTS | `node --version` |
+| pnpm | 8.0.0 | 9.x | `pnpm --version` |
+| Git | 2.30.0 | latest | `git --version` |
 
-### 1.2 선택 소프트웨어
+### 1.2 권장 에디터
 
-| 소프트웨어 | 용도 | 설치 방법 |
-|------------|------|-----------|
-| **Make** | 빌드 자동화 | `apt install make` / `brew install make` |
-| **direnv** | 환경변수 관리 | `apt install direnv` / `brew install direnv` |
-| **jq** | JSON 처리 | `apt install jq` / `brew install jq` |
-| **httpie** | API 테스트 | `pip install httpie` |
+| 에디터 | 필수 확장 |
+|--------|----------|
+| **VS Code** (권장) | Astro, Tailwind CSS IntelliSense, ESLint, Prettier |
+| WebStorm | Astro plugin |
+| Neovim | astro-ls |
 
-### 1.3 권장 IDE 및 확장
+### 1.3 운영체제
 
-**VS Code (권장)**
+| OS | 지원 상태 |
+|----|----------|
+| macOS 12+ | ✅ 완전 지원 |
+| Ubuntu 20.04+ | ✅ 완전 지원 |
+| Windows 11 + WSL2 | ✅ 완전 지원 |
+| Windows (native) | ⚠️ 제한적 지원 |
 
-필수 확장:
+---
+
+## 2. 로컬 개발 환경 설정
+
+### 2.1 Node.js 설치
+
+**macOS (Homebrew):**
+```bash
+# Node.js 20 LTS 설치
+brew install node@20
+
+# 또는 nvm 사용 (권장)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+nvm install 20
+nvm use 20
+```
+
+**Ubuntu/Debian:**
+```bash
+# NodeSource 저장소 추가
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+**Windows (WSL2):**
+```bash
+# WSL2 Ubuntu에서 위의 Ubuntu 명령어 사용
+```
+
+### 2.2 pnpm 설치
+
+```bash
+# npm으로 설치
+npm install -g pnpm
+
+# 또는 corepack으로 활성화 (Node.js 16.13+)
+corepack enable
+corepack prepare pnpm@latest --activate
+
+# 설치 확인
+pnpm --version
+```
+
+### 2.3 프로젝트 클론 및 설정
+
+```bash
+# 1. 저장소 클론
+git clone https://github.com/Prometheus-P/hallyulatino.git
+cd hallyulatino
+
+# 2. 의존성 설치
+pnpm install
+
+# 3. 개발 서버 시작
+pnpm dev
+
+# 4. 브라우저에서 확인
+# http://localhost:4321
+```
+
+### 2.4 설치 확인
+
+```bash
+# 빌드 테스트
+pnpm build
+
+# 성공 시 출력:
+# ✓ Completed in XXms.
+# [build] X page(s) built in X.XXs
+# [build] Complete!
+```
+
+---
+
+## 3. VS Code 설정
+
+### 3.1 필수 확장
+
+`.vscode/extensions.json`에 정의된 확장:
+
 ```json
 {
   "recommendations": [
-    "ms-python.python",
-    "ms-python.vscode-pylance",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
+    "astro-build.astro-vscode",
     "bradlc.vscode-tailwindcss",
-    "prisma.prisma",
-    "ms-azuretools.vscode-docker",
-    "eamodio.gitlens",
-    "usernamehw.errorlens"
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
   ]
 }
 ```
 
-**JetBrains (대안)**
-- WebStorm (프론트엔드)
-- PyCharm (백엔드)
-
----
-
-## 2. 설치 가이드 (Installation Guide)
-
-### 2.1 macOS
-
+**설치 방법:**
 ```bash
-# Homebrew 설치 (없는 경우)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# VS Code에서 프로젝트 열기
+code .
 
-# 필수 도구 설치
-brew install git node@20 python@3.12 docker docker-compose
-
-# Node.js 버전 관리 (nvm 권장)
-brew install nvm
-echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc
-echo '[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"' >> ~/.zshrc
-source ~/.zshrc
-nvm install 20
-nvm use 20
-
-# Python 버전 관리 (pyenv 권장)
-brew install pyenv
-echo 'eval "$(pyenv init -)"' >> ~/.zshrc
-source ~/.zshrc
-pyenv install 3.12.0
-pyenv global 3.12.0
+# 확장 탭에서 "@recommended" 검색 후 모두 설치
 ```
 
-### 2.2 Ubuntu/Debian
+### 3.2 권장 설정
 
-```bash
-# 시스템 업데이트
-sudo apt update && sudo apt upgrade -y
+`.vscode/settings.json` (프로젝트 레벨):
 
-# 필수 패키지 설치
-sudo apt install -y git curl wget build-essential
-
-# Node.js 설치 (nvm 사용)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source ~/.bashrc
-nvm install 20
-nvm use 20
-
-# Python 설치 (pyenv 사용)
-curl https://pyenv.run | bash
-echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-source ~/.bashrc
-pyenv install 3.12.0
-pyenv global 3.12.0
-
-# Docker 설치
-curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
-newgrp docker
-
-# Docker Compose 설치
-sudo apt install docker-compose-plugin
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "tailwindCSS.includeLanguages": {
+    "astro": "html"
+  },
+  "files.associations": {
+    "*.mdx": "markdown"
+  }
+}
 ```
 
-### 2.3 Windows
+### 3.3 디버깅 설정
 
-```powershell
-# Windows Subsystem for Linux (WSL2) 사용 권장
-wsl --install
+`.vscode/launch.json`:
 
-# WSL2 내에서 Ubuntu 가이드를 따르세요
-
-# 또는 Windows 네이티브 설치:
-# 1. Git: https://git-scm.com/download/win
-# 2. Node.js: https://nodejs.org/ (LTS 버전)
-# 3. Python: https://www.python.org/downloads/
-# 4. Docker Desktop: https://www.docker.com/products/docker-desktop
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Astro Dev Server",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}
 ```
 
 ---
 
-## 3. 프로젝트 설정 (Project Setup)
+## 4. 환경 변수
 
-### 3.1 저장소 클론
+### 4.1 현재 상태
+
+**이 프로젝트는 100% 정적 사이트로, 빌드 시 환경 변수가 필요하지 않습니다.**
+
+모든 설정은 `astro.config.mjs`에 하드코딩되어 있습니다.
+
+### 4.2 향후 환경 변수 (예정)
+
+향후 기능 추가 시 필요할 수 있는 환경 변수:
 
 ```bash
-# HTTPS
-git clone https://github.com/hallyulatino/hallyulatino.git
+# .env.example (향후 생성 예정)
 
-# SSH (권장)
-git clone git@github.com:hallyulatino/hallyulatino.git
+# Analytics (Phase 2)
+PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
-cd hallyulatino
+# Search (Phase 3)
+PUBLIC_ALGOLIA_APP_ID=
+PUBLIC_ALGOLIA_SEARCH_KEY=
+
+# Newsletter (Phase 3)
+PUBLIC_BUTTONDOWN_API_KEY=
 ```
 
-### 3.2 환경변수 설정
+### 4.3 환경 변수 규칙
 
-```bash
-# 환경변수 템플릿 복사
-cp .env.example .env
+| 접두사 | 용도 | 클라이언트 노출 |
+|--------|------|----------------|
+| `PUBLIC_` | 클라이언트 사이드 | ✅ 노출됨 |
+| (없음) | 서버 사이드 only | ❌ 노출 안됨 |
 
-# .env 파일 편집
-# 아래 섹션 4를 참고하여 필요한 값을 설정하세요
+---
+
+## 5. 프로젝트 설정 파일
+
+### 5.1 astro.config.mjs
+
+```javascript
+// 핵심 설정
+export default defineConfig({
+  site: 'https://hallyulatino.com',  // 프로덕션 URL
+  output: 'static',                   // SSG 모드
+  trailingSlash: 'never',             // URL 끝에 슬래시 없음
+
+  // i18n
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'pt'],
+  },
+
+  // 통합
+  integrations: [
+    mdx(),
+    sitemap({ i18n: { ... } }),
+  ],
+
+  // 빌드 최적화
+  build: {
+    format: 'file',          // /page.html (not /page/index.html)
+    inlineStylesheets: 'auto',
+  },
+  compressHTML: true,
+});
 ```
 
-### 3.3 Docker 개발 환경 실행
+### 5.2 tsconfig.json
 
-```bash
-# 전체 서비스 빌드 및 실행
-docker compose up -d --build
-
-# 서비스 상태 확인
-docker compose ps
-
-# 로그 확인
-docker compose logs -f
-
-# 특정 서비스 로그만 확인
-docker compose logs -f backend
-docker compose logs -f frontend
+```json
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@content/*": ["src/content/*"]
+    }
+  }
+}
 ```
 
-### 3.4 로컬 개발 환경 (Docker 없이)
+### 5.3 package.json 스크립트
 
-**프론트엔드:**
-```bash
-cd src/frontend
-
-# 의존성 설치
-npm install
-
-# 개발 서버 실행
-npm run dev
-
-# 타입 체크
-npm run type-check
-
-# 린트
-npm run lint
-```
-
-**백엔드:**
-```bash
-cd src/backend
-
-# 가상환경 생성 및 활성화
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# 의존성 설치
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-
-# 데이터베이스 마이그레이션
-alembic upgrade head
-
-# 개발 서버 실행
-uvicorn main:app --reload --port 8000
-
-# 또는 make 사용
-make run-backend
-```
-
-**AI Worker:**
-```bash
-cd src/worker
-
-# 가상환경 활성화 (백엔드와 공유 가능)
-source ../backend/venv/bin/activate
-
-# 의존성 설치
-pip install -r requirements.txt
-
-# Celery Worker 실행
-celery -A worker worker --loglevel=info
+```json
+{
+  "scripts": {
+    "dev": "astro dev",           // 개발 서버 (HMR)
+    "build": "astro build",       // 프로덕션 빌드
+    "preview": "astro preview",   // 빌드 미리보기
+    "check": "astro check"        // TypeScript 검사
+  }
+}
 ```
 
 ---
 
-## 4. 환경변수 상세 (Environment Variables)
+## 6. 디렉토리별 설정
 
-### 4.1 환경변수 템플릿 (.env.example)
+### 6.1 Content Collections
 
-```bash
-# ═══════════════════════════════════════════════════════════════
-# 🌐 HallyuLatino 환경변수 설정
-# ═══════════════════════════════════════════════════════════════
+`src/content/config.ts`에서 스키마 정의:
 
-# ─────────────────────────────────────────────────────────────────
-# 애플리케이션 설정
-# ─────────────────────────────────────────────────────────────────
-APP_NAME=hallyulatino
-APP_ENV=development  # development | staging | production
-DEBUG=true
-LOG_LEVEL=DEBUG      # DEBUG | INFO | WARNING | ERROR
-
-# ─────────────────────────────────────────────────────────────────
-# 프론트엔드 설정
-# ─────────────────────────────────────────────────────────────────
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_GA_ID=              # Google Analytics ID (선택)
-
-# ─────────────────────────────────────────────────────────────────
-# 백엔드 설정
-# ─────────────────────────────────────────────────────────────────
-SECRET_KEY=your-secret-key-change-in-production
-ALLOWED_HOSTS=localhost,127.0.0.1
-CORS_ORIGINS=http://localhost:3000
-
-# JWT 설정
-JWT_SECRET_KEY=your-jwt-secret-key-change-in-production
-JWT_ALGORITHM=HS256
-JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
-JWT_REFRESH_TOKEN_EXPIRE_DAYS=7
-
-# ─────────────────────────────────────────────────────────────────
-# 데이터베이스 설정
-# ─────────────────────────────────────────────────────────────────
-# PostgreSQL
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/hallyulatino
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=hallyulatino
-
-# Redis
-REDIS_URL=redis://localhost:6379/0
-
-# Elasticsearch
-ELASTICSEARCH_URL=http://localhost:9200
-
-# ─────────────────────────────────────────────────────────────────
-# 외부 서비스 API 키
-# ─────────────────────────────────────────────────────────────────
-# OpenAI
-OPENAI_API_KEY=sk-your-openai-api-key
-
-# Pinecone (벡터 DB)
-PINECONE_API_KEY=your-pinecone-api-key
-PINECONE_ENVIRONMENT=your-pinecone-environment
-PINECONE_INDEX_NAME=hallyulatino
-
-# ElevenLabs (AI 더빙)
-ELEVENLABS_API_KEY=your-elevenlabs-api-key
-
-# ─────────────────────────────────────────────────────────────────
-# OAuth 설정
-# ─────────────────────────────────────────────────────────────────
-# Google OAuth
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-
-# Facebook OAuth
-FACEBOOK_APP_ID=your-facebook-app-id
-FACEBOOK_APP_SECRET=your-facebook-app-secret
-
-# ─────────────────────────────────────────────────────────────────
-# 결제 설정
-# ─────────────────────────────────────────────────────────────────
-STRIPE_SECRET_KEY=sk_test_your-stripe-secret-key
-STRIPE_WEBHOOK_SECRET=whsec_your-webhook-secret
-
-# ─────────────────────────────────────────────────────────────────
-# 스토리지 설정
-# ─────────────────────────────────────────────────────────────────
-# MinIO (로컬) / S3 (프로덕션)
-AWS_ACCESS_KEY_ID=minioadmin
-AWS_SECRET_ACCESS_KEY=minioadmin
-AWS_S3_BUCKET=hallyulatino
-AWS_S3_ENDPOINT_URL=http://localhost:9000  # MinIO용
-
-# ─────────────────────────────────────────────────────────────────
-# Celery 설정
-# ─────────────────────────────────────────────────────────────────
-CELERY_BROKER_URL=redis://localhost:6379/1
-CELERY_RESULT_BACKEND=redis://localhost:6379/2
-
-# ─────────────────────────────────────────────────────────────────
-# 모니터링 설정
-# ─────────────────────────────────────────────────────────────────
-SENTRY_DSN=                     # Sentry DSN (선택)
-DATADOG_API_KEY=                # Datadog API Key (선택)
+```typescript
+// 콘텐츠 타입 추가 시:
+// 1. config.ts에 새 collection 정의
+// 2. src/content/[collection-name]/ 디렉토리 생성
+// 3. src/pages/[collection-name]/ 페이지 생성
 ```
 
-### 4.2 환경별 설정
+### 6.2 Static Assets
 
-| 환경 | 설명 | 특징 |
+```
+public/
+├── favicon.svg          # 파비콘 (SVG)
+├── robots.txt           # 크롤러 설정
+├── og-default.jpg       # 기본 OG 이미지 (1200x630)
+└── images/
+    ├── dramas/          # 드라마 이미지
+    ├── kpop/            # K-Pop 이미지
+    ├── noticias/        # 뉴스 이미지
+    └── guias/           # 가이드 이미지
+```
+
+**이미지 권장 사항:**
+| 용도 | 크기 | 형식 |
 |------|------|------|
-| `development` | 로컬 개발 | DEBUG=true, 상세 로그 |
-| `staging` | 스테이징 | 프로덕션 유사, 테스트 데이터 |
-| `production` | 프로덕션 | DEBUG=false, 최소 로그 |
+| Hero Image | 1200x630px | WebP, JPG |
+| Thumbnail | 400x300px | WebP |
+| OG Image | 1200x630px | JPG |
 
 ---
 
-## 5. Docker Compose 구성 (Docker Compose Configuration)
+## 7. Git 설정
 
-### 5.1 docker-compose.yml
+### 7.1 .gitignore
+
+```gitignore
+# 빌드 출력
+dist/
+
+# Astro 생성 파일
+.astro/
+
+# 의존성
+node_modules/
+
+# 환경 변수
+.env
+.env.*
+!.env.example
+
+# OS 파일
+.DS_Store
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+```
+
+### 7.2 Branch 보호 규칙 (GitHub)
+
+| Branch | 규칙 |
+|--------|------|
+| `main` | PR 필수, 1+ 리뷰 승인, CI 통과 필수 |
+| `feat/*` | 제한 없음 |
+
+---
+
+## 8. CI/CD 환경
+
+### 8.1 GitHub Actions
+
+`.github/workflows/ci.yml` (예정):
 
 ```yaml
-version: '3.8'
+name: CI
 
-services:
-  # ─────────────────────────────────────────────────────────────
-  # 프론트엔드
-  # ─────────────────────────────────────────────────────────────
-  frontend:
-    build:
-      context: ./src/frontend
-      dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./src/frontend:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
-    depends_on:
-      - backend
-    networks:
-      - hallyulatino-network
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-  # ─────────────────────────────────────────────────────────────
-  # 백엔드
-  # ─────────────────────────────────────────────────────────────
-  backend:
-    build:
-      context: ./src/backend
-      dockerfile: Dockerfile.dev
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./src/backend:/app
-    environment:
-      - APP_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/hallyulatino
-      - REDIS_URL=redis://redis:6379/0
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    networks:
-      - hallyulatino-network
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  # ─────────────────────────────────────────────────────────────
-  # AI Worker
-  # ─────────────────────────────────────────────────────────────
-  worker:
-    build:
-      context: ./src/worker
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./src/worker:/app
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://redis:6379/2
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    depends_on:
-      - redis
-    networks:
-      - hallyulatino-network
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
-  # ─────────────────────────────────────────────────────────────
-  # PostgreSQL
-  # ─────────────────────────────────────────────────────────────
-  postgres:
-    image: postgres:16-alpine
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=hallyulatino
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - hallyulatino-network
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
-  # ─────────────────────────────────────────────────────────────
-  # Redis
-  # ─────────────────────────────────────────────────────────────
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - hallyulatino-network
-
-  # ─────────────────────────────────────────────────────────────
-  # Elasticsearch
-  # ─────────────────────────────────────────────────────────────
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
-    ports:
-      - "9200:9200"
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - hallyulatino-network
-
-  # ─────────────────────────────────────────────────────────────
-  # MinIO (S3 호환 스토리지)
-  # ─────────────────────────────────────────────────────────────
-  minio:
-    image: minio/minio:latest
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-    volumes:
-      - minio_data:/data
-    command: server /data --console-address ":9001"
-    networks:
-      - hallyulatino-network
-
-  # ─────────────────────────────────────────────────────────────
-  # Mailhog (개발용 메일 서버)
-  # ─────────────────────────────────────────────────────────────
-  mailhog:
-    image: mailhog/mailhog:latest
-    ports:
-      - "1025:1025"  # SMTP
-      - "8025:8025"  # Web UI
-    networks:
-      - hallyulatino-network
-
-volumes:
-  postgres_data:
-  redis_data:
-  elasticsearch_data:
-  minio_data:
-
-networks:
-  hallyulatino-network:
-    driver: bridge
+      - run: pnpm install
+      - run: pnpm check
+      - run: pnpm build
 ```
+
+### 8.2 Cloudflare Pages
+
+| 설정 | 값 |
+|------|-----|
+| Framework preset | Astro |
+| Build command | `pnpm build` |
+| Build output | `dist` |
+| Node.js version | 20 |
+| Root directory | `/` |
 
 ---
 
-## 6. 서비스 접속 정보 (Service Access)
-
-개발 환경 실행 후 접속 가능한 서비스:
-
-| 서비스 | URL | 설명 |
-|--------|-----|------|
-| 프론트엔드 | http://localhost:3000 | Next.js 애플리케이션 |
-| 백엔드 API | http://localhost:8000 | FastAPI 서버 |
-| API 문서 (Swagger) | http://localhost:8000/docs | OpenAPI 문서 |
-| API 문서 (ReDoc) | http://localhost:8000/redoc | ReDoc 형식 문서 |
-| PostgreSQL | localhost:5432 | 데이터베이스 |
-| Redis | localhost:6379 | 캐시/세션/큐 |
-| Elasticsearch | http://localhost:9200 | 검색 엔진 |
-| MinIO Console | http://localhost:9001 | 오브젝트 스토리지 UI |
-| Mailhog | http://localhost:8025 | 개발용 메일 UI |
-
----
-
-## 7. 데이터베이스 설정 (Database Setup)
-
-### 7.1 마이그레이션 실행
-
-```bash
-cd src/backend
-
-# 마이그레이션 생성
-alembic revision --autogenerate -m "description"
-
-# 마이그레이션 적용
-alembic upgrade head
-
-# 마이그레이션 롤백
-alembic downgrade -1
-
-# 마이그레이션 히스토리 확인
-alembic history
-```
-
-### 7.2 시드 데이터 로드
-
-```bash
-# 개발용 시드 데이터 로드
-python scripts/seed_data.py
-
-# 또는 make 사용
-make seed-db
-```
-
-### 7.3 데이터베이스 리셋
-
-```bash
-# 주의: 모든 데이터가 삭제됩니다
-docker compose down -v
-docker compose up -d postgres
-alembic upgrade head
-python scripts/seed_data.py
-```
-
----
-
-## 8. 테스트 환경 (Test Environment)
-
-### 8.1 테스트 실행
-
-```bash
-# 전체 테스트
-make test
-
-# 프론트엔드 테스트
-cd src/frontend
-npm run test
-npm run test:coverage
-
-# 백엔드 테스트
-cd src/backend
-pytest
-pytest --cov=app --cov-report=html
-
-# E2E 테스트
-cd tests/e2e
-npm run test:e2e
-```
-
-### 8.2 테스트 데이터베이스
-
-테스트는 별도의 데이터베이스를 사용합니다:
-
-```bash
-# 테스트 DB 환경변수
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/hallyulatino_test
-```
-
----
-
-## 9. 문제 해결 (Troubleshooting)
+## 9. 문제 해결
 
 ### 9.1 일반적인 문제
 
-**포트 충돌**
+**문제: `pnpm install` 실패**
 ```bash
-# 사용 중인 포트 확인
-lsof -i :3000
-lsof -i :8000
-
-# 프로세스 종료
-kill -9 <PID>
+# 해결: 캐시 정리 후 재설치
+rm -rf node_modules pnpm-lock.yaml
+pnpm install
 ```
 
-**Docker 볼륨 문제**
+**문제: TypeScript 타입 오류**
 ```bash
-# 볼륨 초기화
-docker compose down -v
-docker volume prune -f
+# 해결: Astro 타입 동기화
+pnpm astro sync
 ```
 
-**Node.js 의존성 문제**
+**문제: 빌드 시 이미지 오류**
 ```bash
-# node_modules 재설치
-rm -rf node_modules package-lock.json
-npm install
+# 해결: public/images 디렉토리 확인
+ls -la public/images/
+
+# 이미지 경로는 /images/... 로 시작해야 함
 ```
 
-**Python 의존성 문제**
+### 9.2 포트 충돌
+
 ```bash
-# 가상환경 재생성
-rm -rf venv
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+# 기본 포트(4321) 변경
+pnpm dev --port 3000
+
+# 또는 astro.config.mjs에서 설정
+export default defineConfig({
+  server: { port: 3000 }
+});
 ```
 
-### 9.2 Docker 관련 문제
-
-**컨테이너가 시작되지 않음**
-```bash
-# 로그 확인
-docker compose logs <service-name>
-
-# 컨테이너 재빌드
-docker compose build --no-cache <service-name>
-```
-
-**데이터베이스 연결 실패**
-```bash
-# PostgreSQL 컨테이너 상태 확인
-docker compose ps postgres
-
-# 직접 연결 테스트
-docker compose exec postgres psql -U postgres -d hallyulatino
-```
-
-### 9.3 지원 요청
-
-문제가 해결되지 않으면:
-1. [GitHub Issues](https://github.com/hallyulatino/hallyulatino/issues)에 이슈 등록
-2. 에러 메시지와 재현 단계를 포함해 주세요
-
----
-
-## 10. 유용한 명령어 (Useful Commands)
-
-### Makefile 명령어
+### 9.3 Hot Reload 안 됨
 
 ```bash
-make help           # 사용 가능한 명령어 목록
-make setup          # 초기 설정 (의존성 설치, DB 설정)
-make dev            # 개발 서버 실행
-make test           # 전체 테스트 실행
-make lint           # 린트 검사
-make format         # 코드 포맷팅
-make build          # 프로덕션 빌드
-make clean          # 캐시 및 빌드 파일 정리
-```
-
-### Docker 명령어
-
-```bash
-docker compose up -d          # 백그라운드 실행
-docker compose down           # 서비스 중지
-docker compose logs -f        # 로그 스트리밍
-docker compose exec backend bash  # 컨테이너 접속
-docker compose restart backend    # 서비스 재시작
+# 1. 서버 재시작
+# 2. 브라우저 캐시 삭제
+# 3. 파일 시스템 감시 제한 확인 (Linux)
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
 ```
 
 ---
 
-*이 문서는 개발 환경 설정의 Single Source of Truth입니다. 환경 관련 문제 발생 시 이 문서를 참고해 주세요.*
+## 10. 성능 최적화 설정
+
+### 10.1 빌드 최적화
+
+```javascript
+// astro.config.mjs
+export default defineConfig({
+  build: {
+    inlineStylesheets: 'auto',  // 작은 CSS 인라인
+  },
+  compressHTML: true,           // HTML 압축
+  vite: {
+    build: {
+      cssMinify: true,          // CSS 압축
+    },
+  },
+});
+```
+
+### 10.2 이미지 최적화 (향후)
+
+```bash
+# Astro Image 통합 추가 (선택사항)
+pnpm astro add image
+```
+
+---
+
+## 11. 보안 설정
+
+### 11.1 의존성 보안
+
+```bash
+# 취약점 검사
+pnpm audit
+
+# 취약점 수정
+pnpm audit fix
+```
+
+### 11.2 시크릿 관리
+
+- **로컬**: `.env` 파일 (gitignore됨)
+- **CI/CD**: GitHub Secrets / Cloudflare 환경 변수
+- **절대 금지**: 시크릿을 코드에 하드코딩
+
+---
+
+## 12. 관련 문서
+
+| 문서 | 설명 |
+|------|------|
+| [CONTEXT.md](./CONTEXT.md) | 프로젝트 전체 컨텍스트 |
+| [README.md](./README.md) | 빠른 시작 가이드 |
+| [plan.md](./plan.md) | TDD 개발 플랜 |
+
+---
+
+*환경 설정 관련 문의: 프로젝트 Issue 등록*

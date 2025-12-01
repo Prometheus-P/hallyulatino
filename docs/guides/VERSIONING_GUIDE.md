@@ -1,584 +1,570 @@
 ---
-title: HallyuLatino 버전 관리 가이드
+title: HallyuLatino - Versioning Guide
 version: 1.0.0
-status: Draft
-owner: @hallyulatino-team
-created: 2025-11-25
-updated: 2025-11-25
-reviewers: []
-language: Korean (한국어)
+status: Approved
+owner: "@hallyulatino-team"
+created: 2024-11-28
+updated: 2024-11-28
 ---
 
-# VERSIONING_GUIDE.md - 버전 관리 가이드
+# Versioning Guide
 
-## 변경 이력 (Changelog)
+## Documento Info
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
-| 1.0.0 | 2025-11-25 | @hallyulatino-team | 최초 작성 |
-
-## 관련 문서 (Related Documents)
-
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - 기여 가이드
-- [docs/operations/RELEASE_MANAGEMENT.md](./docs/operations/RELEASE_MANAGEMENT.md) - 릴리스 관리
+| Campo | Valor |
+|-------|-------|
+| Versión | 1.0.0 |
+| Última actualización | 2024-11-28 |
+| Autor | HallyuLatino Team |
+| Estado | Activo |
 
 ---
 
-## 📋 목차
+## 1. Semantic Versioning
 
-1. [Semantic Versioning](#-semantic-versioning)
-2. [Git 브랜치 전략](#-git-브랜치-전략)
-3. [태그 관리](#-태그-관리)
-4. [릴리스 프로세스](#-릴리스-프로세스)
-5. [Changelog 관리](#-changelog-관리)
-6. [API 버전 관리](#-api-버전-관리)
+HallyuLatino sigue [Semantic Versioning 2.0.0](https://semver.org/lang/es/) para gestionar versiones del proyecto.
 
----
-
-## 📌 Semantic Versioning
-
-### 버전 형식
+### 1.1 Formato de Versión
 
 ```
 MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]
-
-예시:
-  1.0.0
-  2.1.3
-  1.0.0-alpha.1
-  1.0.0-beta.2
-  1.0.0-rc.1
-  2.0.0+build.1234
 ```
 
-### 버전 증가 규칙
+| Componente | Descripción | Ejemplo |
+|------------|-------------|---------|
+| **MAJOR** | Cambios incompatibles con versiones anteriores | `2.0.0` |
+| **MINOR** | Nueva funcionalidad compatible hacia atrás | `1.1.0` |
+| **PATCH** | Correcciones de bugs compatibles | `1.0.1` |
+| **PRERELEASE** | Versión de pre-lanzamiento | `1.0.0-alpha.1` |
+| **BUILD** | Metadata de build (opcional) | `1.0.0+20241128` |
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  Semantic Versioning 규칙                    │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  MAJOR (주 버전)                                             │
-│  ├─ 하위 호환되지 않는 API 변경                               │
-│  └─ 예: 1.9.0 → 2.0.0                                       │
-│                                                             │
-│  MINOR (부 버전)                                             │
-│  ├─ 하위 호환되는 새 기능 추가                                │
-│  └─ 예: 1.0.9 → 1.1.0                                       │
-│                                                             │
-│  PATCH (수 버전)                                             │
-│  ├─ 하위 호환되는 버그 수정                                   │
-│  └─ 예: 1.0.0 → 1.0.1                                       │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
+### 1.2 Cuándo Incrementar
 
-### 버전 변경 예시
+#### MAJOR (X.0.0)
+- Cambios en la estructura de URLs que rompen enlaces existentes
+- Cambios en el schema de Content Collections que invalidan contenido existente
+- Migración a una versión mayor de Astro con breaking changes
+- Rediseño completo del sitio
 
-| 변경 유형 | 버전 변화 | 예시 |
-|-----------|-----------|------|
-| Breaking API 변경 | MAJOR | 1.2.3 → 2.0.0 |
-| 새 기능 추가 | MINOR | 1.2.3 → 1.3.0 |
-| 버그 수정 | PATCH | 1.2.3 → 1.2.4 |
-| 보안 패치 | PATCH | 1.2.3 → 1.2.4 |
-| 문서 수정 | 변경 없음 | 1.2.3 → 1.2.3 |
-| 내부 리팩토링 | PATCH | 1.2.3 → 1.2.4 |
+#### MINOR (0.X.0)
+- Nueva colección de contenido
+- Nuevos componentes o páginas
+- Nueva funcionalidad de SEO
+- Integración de nuevas herramientas (analytics, ads)
+- Mejoras significativas de rendimiento
 
-### Pre-release 버전
+#### PATCH (0.0.X)
+- Corrección de bugs
+- Actualizaciones de dependencias menores
+- Correcciones de typos en código
+- Ajustes de estilos CSS
+- Mejoras menores de accesibilidad
 
-| 단계 | 형식 | 설명 |
-|------|------|------|
-| Alpha | `1.0.0-alpha.1` | 초기 개발, 불안정 |
-| Beta | `1.0.0-beta.1` | 기능 완료, 테스트 중 |
-| RC | `1.0.0-rc.1` | 릴리스 후보, 최종 테스트 |
+### 1.3 Pre-release Tags
 
-### 버전 우선순위
-
-```
-0.9.0 < 1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-beta
-< 1.0.0-beta.2 < 1.0.0-rc.1 < 1.0.0 < 1.0.1
-```
+| Tag | Uso | Ejemplo |
+|-----|-----|---------|
+| `alpha` | Desarrollo inicial, inestable | `1.0.0-alpha.1` |
+| `beta` | Feature complete, en testing | `1.0.0-beta.1` |
+| `rc` | Release candidate, casi listo | `1.0.0-rc.1` |
 
 ---
 
-## 🌳 Git 브랜치 전략
+## 2. Git Tags
 
-### 브랜치 구조
-
-```
-                    ┌─────────────────────────────────────┐
-                    │             BRANCHES                 │
-                    └─────────────────────────────────────┘
-
-    main ─────●─────────●─────────●─────────●───────────▶
-              │         │         │         │
-              │    v1.0.0    v1.1.0    v1.2.0
-              │         │         │         │
-              │         │         │         │
-  develop ────●────●────●────●────●────●────●────●──────▶
-                   │              │              │
-                   │              │              │
-  feature ─────────●──────────────●              │
-                                                 │
-  release ───────────────────────────────────────●──────▶
-                                            v1.2.0-rc.1
-
-  hotfix ──────────────────────●───────────────────────▶
-                           v1.1.1
-```
-
-### 브랜치 역할
-
-| 브랜치 | 목적 | 수명 | 병합 대상 |
-|--------|------|------|-----------|
-| `main` | 프로덕션 코드 | 영구 | - |
-| `develop` | 개발 통합 | 영구 | main |
-| `feature/*` | 기능 개발 | 임시 | develop |
-| `release/*` | 릴리스 준비 | 임시 | main, develop |
-| `hotfix/*` | 긴급 수정 | 임시 | main, develop |
-
-### 브랜치 보호 규칙
-
-#### main 브랜치
-```yaml
-protection_rules:
-  - require_pull_request_reviews: true
-    required_approving_review_count: 2
-  - require_status_checks: true
-    required_status_checks:
-      - ci/build
-      - ci/test
-      - security/scan
-  - require_linear_history: true
-  - restrict_push: true
-  - allow_force_push: false
-  - allow_deletions: false
-```
-
-#### develop 브랜치
-```yaml
-protection_rules:
-  - require_pull_request_reviews: true
-    required_approving_review_count: 1
-  - require_status_checks: true
-  - allow_force_push: false
-```
-
----
-
-## 🏷️ 태그 관리
-
-### 태그 명명 규칙
+### 2.1 Convención de Nombres
 
 ```bash
-# 릴리스 태그
+# Versiones de release
 v1.0.0
 v1.1.0
 v2.0.0
 
-# Pre-release 태그
+# Pre-releases
 v1.0.0-alpha.1
-v1.0.0-beta.1
+v1.0.0-beta.2
 v1.0.0-rc.1
+
+# Hotfixes (después del release)
+v1.0.1
+v1.0.2
 ```
 
-### 태그 생성
+### 2.2 Crear Tags
 
 ```bash
-# 릴리스 태그 생성
-git tag -a v1.0.0 -m "Release v1.0.0: Initial release"
+# Tag anotado (recomendado para releases)
+git tag -a v1.0.0 -m "Release v1.0.0 - Descripción breve"
 
-# 특정 커밋에 태그
-git tag -a v1.0.0 9fceb02 -m "Release v1.0.0"
+# Ver tags existentes
+git tag -l "v1.*"
 
-# 태그 푸시
+# Push de un tag específico
 git push origin v1.0.0
 
-# 모든 태그 푸시
+# Push de todos los tags
 git push origin --tags
 ```
 
-### Annotated vs Lightweight 태그
-
-| 유형 | 사용 시점 | 예시 |
-|------|-----------|------|
-| Annotated | 릴리스 (권장) | `git tag -a v1.0.0 -m "message"` |
-| Lightweight | 임시 마킹 | `git tag v1.0.0-temp` |
-
----
-
-## 🚀 릴리스 프로세스
-
-### 릴리스 플로우
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Release Process                           │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  1. Release Branch      2. Version Bump      3. Testing     │
-│       생성                   버전 업데이트        QA 검증    │
-│         │                      │                  │         │
-│         ▼                      ▼                  ▼         │
-│    ┌─────────┐          ┌─────────┐        ┌─────────┐     │
-│    │release/ │─────────▶│ Update  │───────▶│  QA     │     │
-│    │v1.2.0   │          │ Version │        │ Testing │     │
-│    └─────────┘          └─────────┘        └─────────┘     │
-│                                                  │          │
-│  6. Cleanup          5. Tag & Release    4. Merge          │
-│     브랜치 정리          태그 생성           main 병합       │
-│         │                   │                  │            │
-│         ▼                   ▼                  ▼            │
-│    ┌─────────┐         ┌─────────┐       ┌─────────┐       │
-│    │ Delete  │◀────────│  v1.2.0 │◀──────│  Merge  │       │
-│    │ Branch  │         │  Tag    │       │ to main │       │
-│    └─────────┘         └─────────┘       └─────────┘       │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 상세 단계
-
-#### 1. 릴리스 브랜치 생성
+### 2.3 Eliminar Tags (Solo en Emergencias)
 
 ```bash
-# develop에서 릴리스 브랜치 생성
-git checkout develop
-git pull origin develop
-git checkout -b release/v1.2.0
-```
+# Eliminar tag local
+git tag -d v1.0.0
 
-#### 2. 버전 업데이트
-
-```bash
-# package.json 버전 업데이트 (Frontend)
-npm version 1.2.0 --no-git-tag-version
-
-# pyproject.toml 버전 업데이트 (Backend)
-# version = "1.2.0" 수동 수정
-
-# CHANGELOG.md 업데이트
-# 커밋
-git add -A
-git commit -m "chore(release): bump version to 1.2.0"
-```
-
-#### 3. QA 테스트
-
-```bash
-# 스테이징 환경 배포
-make deploy-staging
-
-# 테스트 실행
-make test-all
-```
-
-#### 4. main으로 병합
-
-```bash
-# PR 생성 및 리뷰
-# main으로 병합
-git checkout main
-git merge --no-ff release/v1.2.0
-```
-
-#### 5. 태그 생성 및 릴리스
-
-```bash
-# 태그 생성
-git tag -a v1.2.0 -m "Release v1.2.0"
-git push origin v1.2.0
-
-# GitHub Release 생성 (CI/CD 자동화)
-```
-
-#### 6. develop으로 역병합 및 정리
-
-```bash
-# develop으로 병합
-git checkout develop
-git merge --no-ff release/v1.2.0
-
-# 릴리스 브랜치 삭제
-git branch -d release/v1.2.0
-git push origin --delete release/v1.2.0
-```
-
-### 핫픽스 프로세스
-
-```bash
-# 1. main에서 hotfix 브랜치 생성
-git checkout main
-git checkout -b hotfix/v1.2.1
-
-# 2. 버그 수정 및 버전 업데이트
-# ... 수정 작업 ...
-git commit -m "fix(auth): resolve critical security vulnerability"
-
-# 3. main으로 병합 및 태그
-git checkout main
-git merge --no-ff hotfix/v1.2.1
-git tag -a v1.2.1 -m "Hotfix v1.2.1"
-
-# 4. develop으로 역병합
-git checkout develop
-git merge --no-ff hotfix/v1.2.1
-
-# 5. 브랜치 삭제
-git branch -d hotfix/v1.2.1
+# Eliminar tag remoto
+git push origin --delete v1.0.0
 ```
 
 ---
 
-## 📝 Changelog 관리
+## 3. Release Process
 
-### CHANGELOG.md 형식
+### 3.1 Flujo de Release
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Develop   │────▶│   Release   │────▶│    Main     │
+│   Branch    │     │   Branch    │     │   (Prod)    │
+└─────────────┘     └─────────────┘     └─────────────┘
+       │                   │                    │
+       │                   ▼                    │
+       │            ┌─────────────┐             │
+       │            │  QA/Testing │             │
+       │            └─────────────┘             │
+       │                   │                    │
+       │                   ▼                    │
+       │            ┌─────────────┐             │
+       │            │   Hotfix    │◀────────────┘
+       │            └─────────────┘
+       │                   │
+       └───────────────────┘
+```
+
+### 3.2 Checklist de Release
+
+#### Pre-Release
+
+- [ ] Todos los PRs del milestone están mergeados
+- [ ] Todas las pruebas pasan (`pnpm build`)
+- [ ] CHANGELOG.md actualizado
+- [ ] Versión actualizada en `package.json`
+- [ ] Documentación actualizada si es necesario
+- [ ] Review de SEO (meta tags, sitemap)
+- [ ] Lighthouse score > 90 en todas las categorías
+
+#### Durante Release
+
+- [ ] Crear branch de release: `release/vX.Y.Z`
+- [ ] Última revisión de cambios
+- [ ] Merge a main
+- [ ] Crear tag: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
+- [ ] Push tag: `git push origin vX.Y.Z`
+- [ ] Verificar deploy en Cloudflare Pages
+
+#### Post-Release
+
+- [ ] Verificar sitio en producción
+- [ ] Crear GitHub Release con notas
+- [ ] Anunciar release (si es significativo)
+- [ ] Merge release branch de vuelta a develop
+- [ ] Eliminar branch de release
+
+### 3.3 Comandos de Release
+
+```bash
+# 1. Asegurar que main está actualizado
+git checkout main
+git pull origin main
+
+# 2. Crear branch de release
+git checkout -b release/v1.1.0
+
+# 3. Actualizar versión en package.json
+# (editar manualmente o usar npm version)
+
+# 4. Actualizar CHANGELOG.md
+# (agregar entrada para la nueva versión)
+
+# 5. Commit de release
+git add package.json CHANGELOG.md
+git commit -m "chore(release): prepare v1.1.0"
+
+# 6. Merge a main
+git checkout main
+git merge release/v1.1.0 --no-ff -m "chore(release): v1.1.0"
+
+# 7. Crear tag
+git tag -a v1.1.0 -m "Release v1.1.0
+
+- Nueva funcionalidad X
+- Mejora en Y
+- Corrección de bug Z"
+
+# 8. Push
+git push origin main
+git push origin v1.1.0
+
+# 9. Cleanup
+git branch -d release/v1.1.0
+```
+
+---
+
+## 4. CHANGELOG Management
+
+### 4.1 Formato del CHANGELOG
+
+Seguimos el formato [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/):
 
 ```markdown
 # Changelog
 
-이 프로젝트의 모든 주요 변경사항이 이 파일에 기록됩니다.
+Todos los cambios notables de este proyecto serán documentados en este archivo.
 
-형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.0.0/)를 기반으로 하며,
-이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
+El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
+y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
 ### Added
-- 새로운 기능
+- Nueva funcionalidad pendiente de release
+
+## [1.1.0] - 2024-12-15
+
+### Added
+- Componente de compartir en redes sociales
+- Página de búsqueda
 
 ### Changed
-- 기존 기능 변경
-
-### Deprecated
-- 곧 제거될 기능
-
-### Removed
-- 제거된 기능
+- Diseño del header mejorado
 
 ### Fixed
-- 버그 수정
+- Error en el cálculo de tiempo de lectura
 
-### Security
-- 보안 취약점 수정
-
-## [1.2.0] - 2025-11-25
+## [1.0.0] - 2024-11-28
 
 ### Added
-- 사용자 프로필 이미지 업로드 기능 추가 (#123)
-- Google OAuth 로그인 지원 (#124)
-
-### Changed
-- 비디오 플레이어 UI 개선 (#125)
-
-### Fixed
-- 로그인 시 세션 만료 오류 수정 (#126)
-
-## [1.1.0] - 2025-11-01
-
-### Added
-- AI 자막 번역 기능 (한→스페인어) (#100)
-- 콘텐츠 검색 기능 (#101)
-
-### Security
-- JWT 토큰 만료 시간 단축 (#102)
-
-## [1.0.0] - 2025-10-15
-
-### Added
-- 초기 릴리스
-- 사용자 인증 시스템
-- 콘텐츠 스트리밍
-- 기본 UI
+- Lanzamiento inicial
+- Content Collections para dramas, kpop, noticias, guías
+- Sistema de SEO completo
+- Layouts base y de artículo
 ```
 
-### Changelog 작성 규칙
+### 4.2 Categorías de Cambios
 
-1. **최신 버전이 위에**: 역순으로 기록
-2. **날짜 포함**: ISO 8601 형식 (YYYY-MM-DD)
-3. **이슈/PR 링크**: 관련 이슈나 PR 번호 포함
-4. **사용자 관점**: 기술적 세부사항보다 변경 영향 중심
-5. **카테고리 분류**: Added, Changed, Fixed 등으로 분류
+| Categoría | Descripción | Icono sugerido |
+|-----------|-------------|----------------|
+| **Added** | Nuevas funcionalidades | :sparkles: |
+| **Changed** | Cambios en funcionalidad existente | :recycle: |
+| **Deprecated** | Funcionalidad que será removida | :warning: |
+| **Removed** | Funcionalidad eliminada | :fire: |
+| **Fixed** | Correcciones de bugs | :bug: |
+| **Security** | Correcciones de vulnerabilidades | :lock: |
 
-### 자동화
+### 4.3 Buenas Prácticas
 
-```yaml
-# .github/workflows/release.yml
-- name: Generate Changelog
-  uses: conventional-changelog/standard-version@v1
-  with:
-    skip:
-      commit: true
-      tag: true
-```
+1. **Mantener [Unreleased]** siempre arriba
+2. **Escribir para humanos**, no para máquinas
+3. **Una entrada por cambio significativo**
+4. **Incluir links a PRs/Issues** cuando sea relevante
+5. **Usar verbos en pasado**: "Added", "Fixed", "Changed"
+6. **Agrupar cambios** por categoría, luego por área
 
 ---
 
-## 🔌 API 버전 관리
+## 5. Branch Strategy para Releases
 
-### URL 기반 버전 관리
+### 5.1 Branches Principales
 
-```
-https://api.hallyulatino.com/v1/users
-https://api.hallyulatino.com/v2/users
-```
+| Branch | Propósito | Protección |
+|--------|-----------|------------|
+| `main` | Producción | Protected, require PR |
+| `develop` | Desarrollo activo | Protected, require PR |
 
-### 버전 관리 전략
+### 5.2 Branches de Soporte
 
-```python
-# src/backend/app/api/v1/router.py
-from fastapi import APIRouter
+| Patrón | Propósito | Ejemplo |
+|--------|-----------|---------|
+| `release/vX.Y.Z` | Preparación de release | `release/v1.1.0` |
+| `hotfix/descripcion` | Correcciones urgentes | `hotfix/seo-canonical` |
 
-router_v1 = APIRouter(prefix="/v1")
-
-@router_v1.get("/users/{user_id}")
-async def get_user_v1(user_id: int):
-    """V1 API: 사용자 조회"""
-    return {"id": user_id, "version": "v1"}
-
-
-# src/backend/app/api/v2/router.py
-router_v2 = APIRouter(prefix="/v2")
-
-@router_v2.get("/users/{user_id}")
-async def get_user_v2(user_id: int):
-    """V2 API: 사용자 조회 (확장된 필드 포함)"""
-    return {
-        "id": user_id,
-        "version": "v2",
-        "profile": {...},
-        "preferences": {...}
-    }
-```
-
-### API 버전 지원 정책
-
-| 버전 | 상태 | 지원 종료 |
-|------|------|-----------|
-| v2 | Current | - |
-| v1 | Deprecated | 2026-06-01 |
-
-### Deprecation 공지
-
-```python
-from fastapi import Header, HTTPException
-from datetime import datetime
-
-async def check_api_version(
-    x_api_version: str = Header(default="v2")
-):
-    if x_api_version == "v1":
-        # 응답 헤더에 경고 추가
-        return {
-            "X-API-Deprecation-Warning": "v1 is deprecated. Please migrate to v2 by 2026-06-01",
-            "X-API-Deprecation-Date": "2026-06-01"
-        }
-```
-
----
-
-## 📦 패키지 버전 관리
-
-### Frontend (package.json)
-
-```json
-{
-  "name": "hallyulatino-frontend",
-  "version": "1.2.0",
-  "dependencies": {
-    "next": "^14.0.0",
-    "react": "^18.2.0"
-  }
-}
-```
-
-### Backend (pyproject.toml)
-
-```toml
-[project]
-name = "hallyulatino-backend"
-version = "1.2.0"
-
-[project.dependencies]
-fastapi = "^0.109.0"
-sqlalchemy = "^2.0.0"
-```
-
-### 의존성 버전 범위
-
-| 기호 | 의미 | 예시 |
-|------|------|------|
-| `^` | Minor 업데이트 허용 | `^1.2.3` → `1.x.x` |
-| `~` | Patch 업데이트 허용 | `~1.2.3` → `1.2.x` |
-| `>=` | 이상 | `>=1.2.3` |
-| `==` | 정확히 일치 | `==1.2.3` |
-
----
-
-## 🔧 버전 관리 도구
-
-### Git Hooks
+### 5.3 Flujo de Hotfix
 
 ```bash
-# .husky/pre-commit
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# 1. Crear branch desde main
+git checkout main
+git checkout -b hotfix/fix-critical-bug
 
-# 버전 일관성 검사
-npm run version-check
-```
+# 2. Hacer el fix
+# ... editar archivos ...
 
-### Version Check Script
+# 3. Commit
+git commit -m "fix(seo): correct canonical URL generation"
 
-```python
-# scripts/version_check.py
-"""버전 일관성 검사 스크립트"""
-import json
-import toml
+# 4. Actualizar version (patch)
+# Editar package.json: 1.0.0 -> 1.0.1
 
-def check_versions():
-    # package.json 버전
-    with open('src/frontend/package.json') as f:
-        fe_version = json.load(f)['version']
+# 5. Commit de versión
+git commit -m "chore(release): bump to v1.0.1"
 
-    # pyproject.toml 버전
-    with open('src/backend/pyproject.toml') as f:
-        be_version = toml.load(f)['project']['version']
+# 6. Merge a main
+git checkout main
+git merge hotfix/fix-critical-bug --no-ff
 
-    # CHANGELOG.md 최신 버전
-    # ... 파싱 로직 ...
+# 7. Tag
+git tag -a v1.0.1 -m "Hotfix v1.0.1 - Fix canonical URL"
 
-    if fe_version != be_version:
-        raise ValueError(f"Version mismatch: FE={fe_version}, BE={be_version}")
+# 8. Push
+git push origin main
+git push origin v1.0.1
 
-    print(f"✅ Version check passed: {fe_version}")
+# 9. Merge a develop también
+git checkout develop
+git merge main
 
-if __name__ == "__main__":
-    check_versions()
+# 10. Cleanup
+git branch -d hotfix/fix-critical-bug
 ```
 
 ---
 
-## 📊 버전 관리 체크리스트
+## 6. Versionado de Contenido
 
-### 릴리스 전 체크리스트
+### 6.1 Contenido No Sigue SemVer
 
-- [ ] 모든 테스트 통과
-- [ ] CHANGELOG.md 업데이트
-- [ ] 버전 번호 업데이트 (모든 파일)
-- [ ] API 문서 업데이트
-- [ ] Breaking Changes 문서화
-- [ ] Deprecation 경고 추가 (해당 시)
-- [ ] 릴리스 노트 작성
+El contenido (artículos MDX) no sigue versionado semántico. En su lugar:
 
-### 릴리스 후 체크리스트
+- Cada artículo tiene `pubDate` y opcionalmente `updatedDate`
+- Los cambios de contenido se trackean mediante commits regulares
+- No se crean tags específicos para cambios de contenido
 
-- [ ] Git 태그 생성
-- [ ] GitHub Release 발행
-- [ ] 프로덕션 배포 완료
-- [ ] 모니터링 확인
-- [ ] 공지사항 발행 (필요 시)
+### 6.2 Versionado del Schema
+
+Cambios en `src/content/config.ts` SÍ afectan el versionado:
+
+| Cambio | Impacto |
+|--------|---------|
+| Agregar campo opcional | MINOR |
+| Agregar campo requerido | MAJOR |
+| Cambiar tipo de campo | MAJOR |
+| Agregar nueva colección | MINOR |
+| Eliminar colección | MAJOR |
 
 ---
 
-*이 가이드는 프로젝트의 안정적인 버전 관리를 위해 지속적으로 업데이트됩니다.*
+## 7. GitHub Releases
+
+### 7.1 Crear Release en GitHub
+
+1. Ir a Releases en el repositorio
+2. Click "Draft a new release"
+3. Seleccionar el tag creado
+4. Título: `v1.1.0 - Nombre descriptivo`
+5. Descripción: Copiar del CHANGELOG
+6. Marcar como pre-release si aplica
+7. Publish release
+
+### 7.2 Template de Release Notes
+
+```markdown
+## Highlights
+
+Breve descripción de los cambios más importantes de este release.
+
+## What's Changed
+
+### New Features
+- Feature 1 (#PR)
+- Feature 2 (#PR)
+
+### Improvements
+- Improvement 1 (#PR)
+
+### Bug Fixes
+- Fix 1 (#PR)
+
+## Breaking Changes
+
+Ninguno en este release.
+
+## Upgrade Notes
+
+Instrucciones especiales para actualizar (si aplica).
+
+## Full Changelog
+
+https://github.com/Prometheus-P/hallyulatino/compare/v1.0.0...v1.1.0
+```
+
+---
+
+## 8. Automatización (Futuro)
+
+### 8.1 GitHub Actions para Releases
+
+```yaml
+# .github/workflows/release.yml (ejemplo futuro)
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+```
+
+### 8.2 Changelog Automático
+
+Herramientas a considerar:
+- **conventional-changelog**: Genera CHANGELOG desde commits
+- **semantic-release**: Automatiza versionado completo
+- **release-please**: Alternativa de Google
+
+---
+
+## 9. Versiones Históricas
+
+### 9.1 Historial de Versiones Mayores
+
+| Versión | Fecha | Descripción |
+|---------|-------|-------------|
+| v1.0.0 | 2024-11-28 | Release inicial - Astro SSG migration |
+| v0.4.0 | Legacy | Última versión FastAPI/Next.js (branch: legacy-fastapi-v0.4.0) |
+
+### 9.2 Deprecation Policy
+
+1. Funcionalidades se marcan `Deprecated` en un release MINOR
+2. Se mantienen por al menos 1 release MINOR adicional
+3. Se eliminan en el siguiente release MAJOR
+4. Siempre documentar alternativas en el CHANGELOG
+
+---
+
+## 10. Troubleshooting
+
+### 10.1 Tag Creado en Commit Incorrecto
+
+```bash
+# Eliminar tag local
+git tag -d v1.0.0
+
+# Eliminar tag remoto
+git push origin --delete v1.0.0
+
+# Crear tag en commit correcto
+git tag -a v1.0.0 <commit-hash> -m "Release v1.0.0"
+
+# Push del nuevo tag
+git push origin v1.0.0
+```
+
+### 10.2 Olvidé Actualizar package.json
+
+```bash
+# Si ya se creó el tag, mejor dejarlo y corregir en siguiente release
+# O, si es inmediato:
+git tag -d v1.0.0
+git push origin --delete v1.0.0
+
+# Hacer el fix
+npm version patch --no-git-tag-version  # Si es patch
+git commit -am "chore: fix version in package.json"
+
+# Recrear tag
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin main --tags
+```
+
+### 10.3 Conflicto en Merge de Release
+
+```bash
+# Resolver conflictos manualmente
+git checkout main
+git merge release/v1.0.0
+
+# Si hay conflictos
+# 1. Resolver en los archivos
+# 2. git add <archivos>
+# 3. git commit
+
+# Continuar con el proceso de release
+```
+
+---
+
+## Quick Reference
+
+### Comandos Frecuentes
+
+```bash
+# Ver versión actual
+cat package.json | grep version
+
+# Ver todos los tags
+git tag -l
+
+# Ver tags con mensaje
+git tag -n
+
+# Crear release rápido (después de merge a main)
+git tag -a v1.0.0 -m "Release v1.0.0" && git push origin v1.0.0
+
+# Ver diferencias entre versiones
+git diff v1.0.0..v1.1.0
+
+# Ver commits entre versiones
+git log v1.0.0..v1.1.0 --oneline
+```
+
+### Checklist Rápido de Release
+
+```
+[ ] Tests pasan (pnpm build)
+[ ] CHANGELOG actualizado
+[ ] package.json version actualizada
+[ ] PR mergeado a main
+[ ] Tag creado y pusheado
+[ ] GitHub Release creado
+[ ] Sitio verificado en producción
+```
+
+---
+
+## Referencias
+
+- [Semantic Versioning 2.0.0](https://semver.org/lang/es/)
+- [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/)
+- [Conventional Commits](https://www.conventionalcommits.org/es/v1.0.0/)
+- [Git Tagging Basics](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+
+---
+
+*Documento mantenido por el equipo de HallyuLatino.*
