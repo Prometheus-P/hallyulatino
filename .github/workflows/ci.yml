@@ -50,9 +50,6 @@ jobs:
       - name: Run content validation tests
         run: pnpm test:content
 
-      - name: Run SEO validation tests
-        run: pnpm test:seo
-
   # ─────────────────────────────────────────────────────────────
   # 빌드 테스트
   # ─────────────────────────────────────────────────────────────
@@ -83,6 +80,9 @@ jobs:
 
       - name: Run build validation tests
         run: pnpm test:build
+
+      - name: Run SEO validation tests
+        run: pnpm test:seo
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
