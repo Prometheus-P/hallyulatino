@@ -12,6 +12,24 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
+## [1.1.1] - 2024-12-01
+
+### Added
+
+#### Testing Infrastructure
+- Playwright E2E test suite (58 tests)
+  - Navigation tests (3)
+  - SEO validation tests (4)
+  - Content page tests (6)
+  - Accessibility tests (5)
+  - 404 page tests (3)
+  - Mobile/Tablet responsiveness tests (4)
+  - Performance tests (4)
+- Desktop (Chromium) + Mobile (iPhone 14) test coverage
+- `pnpm test:e2e` y `pnpm test:e2e:ui` scripts
+
+---
+
 ## [1.1.0] - 2024-12-01
 
 ### Added
@@ -154,7 +172,8 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ### Links
 
-[Unreleased]: https://github.com/Prometheus-P/hallyulatino/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/Prometheus-P/hallyulatino/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/Prometheus-P/hallyulatino/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Prometheus-P/hallyulatino/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Prometheus-P/hallyulatino/compare/v0.4.0-alpha.2...v1.0.0
 [0.4.0-alpha.2]: https://github.com/Prometheus-P/hallyulatino/releases/tag/v0.4.0-alpha.2
