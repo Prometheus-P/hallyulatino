@@ -29,8 +29,8 @@ const shareUrls = {
 };
 ---
 
-<div class="share-buttons flex items-center gap-2">
-  <span class="text-sm text-gray-500 mr-2">Compartir:</span>
+<div class="share-buttons flex items-center" style="gap: var(--md-sys-spacing-sm);">
+  <span class="text-sm" style="color: var(--md-sys-color-on-surface-variant); margin-right: var(--md-sys-spacing-sm);">Compartir:</span>
 
   <!-- Twitter/X -->
   <a
@@ -108,15 +108,16 @@ const shareUrls = {
 
 <style>
   .share-btn {
-    padding: 0.5rem;
-    border-radius: 9999px;
-    transition: all 0.2s;
-    background-color: #f3f4f6;
-    color: #374151;
+    padding: var(--md-sys-spacing-sm);
+    border-radius: var(--md-sys-shape-corner-full);
+    transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
   }
 
   .share-btn:hover {
     transform: scale(1.1);
+    box-shadow: var(--md-sys-elevation-level1);
   }
 
   .share-btn.twitter:hover {
@@ -140,8 +141,8 @@ const shareUrls = {
   }
 
   .share-btn.copy-link:hover {
-    background-color: #9333ea;
-    color: #fff;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
   }
 
   .share-btn.copied {
