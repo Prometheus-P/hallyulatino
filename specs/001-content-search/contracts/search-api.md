@@ -192,13 +192,13 @@
 ### SEO Meta Tags
 
 ```html
-<title>Buscar: {query} | OndaCorea</title>
-<meta name="description" content="Resultados de búsqueda para '{query}' en OndaCorea" />
+<title>Buscar: {query} | OndaCoreana</title>
+<meta name="description" content="Resultados de búsqueda para '{query}' en OndaCoreana" />
 <meta name="robots" content="noindex, follow" /> <!-- Don't index empty searches -->
-<link rel="canonical" href="https://ondacorea.com/buscar?q={query}" />
+<link rel="canonical" href="https://ondacoreana.com/buscar?q={query}" />
 
 <!-- Open Graph -->
-<meta property="og:title" content="Buscar: {query} | OndaCorea" />
+<meta property="og:title" content="Buscar: {query} | OndaCoreana" />
 <meta property="og:description" content="Encuentra K-Dramas, K-Pop y más..." />
 <meta property="og:type" content="website" />
 ```

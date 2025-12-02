@@ -1,8 +1,8 @@
 ---
-title: OndaCorea - Versioning Guide
+title: OndaCoreana - Versioning Guide
 version: 1.0.0
 status: Approved
-owner: "@OndaCorea-team"
+owner: "@OndaCoreana-team"
 created: 2024-11-28
 updated: 2024-11-28
 ---
@@ -15,14 +15,14 @@ updated: 2024-11-28
 |-------|-------|
 | Versión | 1.0.0 |
 | Última actualización | 2024-11-28 |
-| Autor | OndaCorea Team |
+| Autor | OndaCoreana Team |
 | Estado | Activo |
 
 ---
 
 ## 1. Semantic Versioning
 
-OndaCorea sigue [Semantic Versioning 2.0.0](https://semver.org/lang/es/) para gestionar versiones del proyecto.
+OndaCoreana sigue [Semantic Versioning 2.0.0](https://semver.org/lang/es/) para gestionar versiones del proyecto.
 
 ### 1.1 Formato de Versión
 
@@ -394,7 +394,7 @@ Instrucciones especiales para actualizar (si aplica).
 
 ## Full Changelog
 
-https://github.com/Prometheus-P/ondacorea/compare/v1.0.0...v1.1.0
+https://github.com/Prometheus-P/ondacoreana/compare/v1.0.0...v1.1.0
 ```
 
 ---
@@ -567,4 +567,4 @@ git log v1.0.0..v1.1.0 --oneline
 
 ---
 
-*Documento mantenido por el equipo de OndaCorea.*
+*Documento mantenido por el equipo de OndaCoreana.*

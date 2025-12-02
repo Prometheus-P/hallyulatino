@@ -1,8 +1,8 @@
 ---
-title: OndaCorea - Development Plan (TDD)
+title: OndaCoreana - Development Plan (TDD)
 version: 1.0.0
 status: Active
-owner: @OndaCorea-team
+owner: @OndaCoreana-team
 created: 2024-11-28
 updated: 2024-11-28
 reviewers: []

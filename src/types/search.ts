@@ -1,5 +1,5 @@
 /**
- * Search Types for OndaCorea Content Search
+ * Search Types for OndaCoreana Content Search
  */
 
 // T008: ContentType enum

@@ -37,7 +37,7 @@ interface Props {
 }
 
 const { schema } = Astro.props;
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://ondacorea.com';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://ondacoreana.com';
 
 function generateSchema(s: SchemaType): object {
   switch (s.type) {
@@ -45,7 +45,7 @@ function generateSchema(s: SchemaType): object {
       return {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: s.name || 'OndaCorea',
+        name: s.name || 'OndaCoreana',
         url: s.url || siteUrl,
         inLanguage: 'es-419',
         potentialAction: {
@@ -62,13 +62,13 @@ function generateSchema(s: SchemaType): object {
       return {
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: s.name || 'OndaCorea',
+        name: s.name || 'OndaCoreana',
         url: s.url || siteUrl,
         logo: s.logo || `${siteUrl}/logo.png`,
         sameAs: [
-          'https://twitter.com/ondacorea',
-          'https://facebook.com/ondacorea',
-          'https://instagram.com/ondacorea',
+          'https://twitter.com/ondacoreana',
+          'https://facebook.com/ondacoreana',
+          'https://instagram.com/ondacoreana',
         ],
       };
 
@@ -83,11 +83,11 @@ function generateSchema(s: SchemaType): object {
         dateModified: (s.dateModified || s.datePublished).toISOString(),
         author: {
           '@type': 'Person',
-          name: s.author || 'OndaCorea',
+          name: s.author || 'OndaCoreana',
         },
         publisher: {
           '@type': 'Organization',
-          name: 'OndaCorea',
+          name: 'OndaCoreana',
           logo: {
             '@type': 'ImageObject',
             url: `${siteUrl}/logo.png`,

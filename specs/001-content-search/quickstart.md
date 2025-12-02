@@ -7,7 +7,7 @@
 
 - Node.js 18+
 - pnpm installed
-- OndaCorea repo cloned and dependencies installed
+- OndaCoreana repo cloned and dependencies installed
 
 ## Setup
 

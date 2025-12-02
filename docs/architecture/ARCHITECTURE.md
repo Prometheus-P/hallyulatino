@@ -1,8 +1,8 @@
 ---
-title: OndaCorea - Architecture Documentation
+title: OndaCoreana - Architecture Documentation
 version: 1.0.0
 status: Approved
-owner: "@OndaCorea-team"
+owner: "@OndaCoreana-team"
 created: 2024-11-28
 updated: 2024-11-28
 ---
@@ -15,7 +15,7 @@ updated: 2024-11-28
 |-------|-------|
 | Versión | 1.0.0 |
 | Última actualización | 2024-11-28 |
-| Autor | OndaCorea Team |
+| Autor | OndaCoreana Team |
 | Estado | Activo |
 
 ---
@@ -39,7 +39,7 @@ updated: 2024-11-28
 
 ### 1.1 Propósito del Sistema
 
-OndaCorea es un portal de contenido estático optimizado para SEO, diseñado para servir contenido sobre cultura coreana (K-Dramas, K-Pop, noticias, guías) a la comunidad hispanohablante.
+OndaCoreana es un portal de contenido estático optimizado para SEO, diseñado para servir contenido sobre cultura coreana (K-Dramas, K-Pop, noticias, guías) a la comunidad hispanohablante.
 
 ### 1.2 Objetivos Arquitectónicos
 
@@ -106,7 +106,7 @@ OndaCorea es un portal de contenido estático optimizado para SEO, diseñado par
 
 ### 2.1 Patrón Arquitectónico: Jamstack
 
-OndaCorea implementa el patrón **Jamstack** (JavaScript, APIs, Markup):
+OndaCoreana implementa el patrón **Jamstack** (JavaScript, APIs, Markup):
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -220,7 +220,7 @@ export default defineConfig({
 ### 4.1 Árbol de Proyecto
 
 ```
-ondacorea/
+ondacoreana/
 ├── public/                    # Archivos estáticos (copiados as-is)
 │   ├── favicon.svg
 │   ├── robots.txt
@@ -514,7 +514,7 @@ const { Content } = await drama.render();
 ```
 Estructura plana optimizada para SEO:
 
-https://ondacorea.com/dramas/goblin-guardian
+https://ondacoreana.com/dramas/goblin-guardian
                         ├──────┴────────────────┘
                         │
                         └── Categoría + slug descriptivo
@@ -531,18 +531,18 @@ https://ondacorea.com/dramas/goblin-guardian
 <!-- Ejemplo de meta tags para un artículo de drama -->
 <head>
   <!-- Primary -->
-  <title>Goblin: El Guardián Solitario - Reseña | OndaCorea</title>
+  <title>Goblin: El Guardián Solitario - Reseña | OndaCoreana</title>
   <meta name="description" content="Descubre por qué Goblin es uno de los mejores K-Dramas de fantasía. Reseña completa con sinopsis, elenco y dónde verlo.">
 
   <!-- Canonical -->
-  <link rel="canonical" href="https://ondacorea.com/dramas/goblin">
+  <link rel="canonical" href="https://ondacoreana.com/dramas/goblin">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
   <meta property="og:title" content="Goblin: El Guardián Solitario - Reseña">
   <meta property="og:description" content="...">
-  <meta property="og:image" content="https://ondacorea.com/images/dramas/goblin-og.jpg">
-  <meta property="og:url" content="https://ondacorea.com/dramas/goblin">
+  <meta property="og:image" content="https://ondacoreana.com/images/dramas/goblin-og.jpg">
+  <meta property="og:url" content="https://ondacoreana.com/dramas/goblin">
   <meta property="og:locale" content="es_MX">
 
   <!-- Twitter -->
@@ -550,9 +550,9 @@ https://ondacorea.com/dramas/goblin-guardian
   <meta name="twitter:title" content="Goblin: El Guardián Solitario - Reseña">
 
   <!-- i18n -->
-  <link rel="alternate" hreflang="es" href="https://ondacorea.com/dramas/goblin">
-  <link rel="alternate" hreflang="pt" href="https://ondacorea.com/pt/dramas/goblin">
-  <link rel="alternate" hreflang="x-default" href="https://ondacorea.com/dramas/goblin">
+  <link rel="alternate" hreflang="es" href="https://ondacoreana.com/dramas/goblin">
+  <link rel="alternate" hreflang="pt" href="https://ondacoreana.com/pt/dramas/goblin">
+  <link rel="alternate" hreflang="x-default" href="https://ondacoreana.com/dramas/goblin">
 </head>
 ```
 
@@ -813,7 +813,7 @@ Node.js version: 18
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                    OndaCorea                           │
+│                    OndaCoreana                           │
 │                 (Static Content Site)                     │
 │                                                           │
 │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐    │
@@ -849,4 +849,4 @@ Node.js version: 18
 
 ---
 
-*Documento mantenido por el equipo de OndaCorea.*
+*Documento mantenido por el equipo de OndaCoreana.*

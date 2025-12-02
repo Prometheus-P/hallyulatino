@@ -17,7 +17,7 @@ test.describe('SEO', () => {
 
     // Canonical URL
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
-    expect(canonical).toContain('ondacorea.com');
+    expect(canonical).toContain('ondacoreana.com');
 
     // Language
     const lang = await page.locator('html').getAttribute('lang');

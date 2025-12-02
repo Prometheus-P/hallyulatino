@@ -91,7 +91,7 @@
        COLOR SYSTEM - Material Design 3
        ============================================ */
 
-    /* Primary Colors - OndaCorea Pink */
+    /* Primary Colors - OndaCoreana Pink */
     --md-sys-color-primary: #ec4899;
     --md-sys-color-on-primary: #ffffff;
     --md-sys-color-primary-container: #fce7f3;
@@ -340,7 +340,7 @@
   /* Dark Theme */
   @media (prefers-color-scheme: dark) {
     :root {
-      /* Primary Colors - OndaCorea Pink Dark */
+      /* Primary Colors - OndaCoreana Pink Dark */
       --md-sys-color-primary: #f9a8d4;
       --md-sys-color-on-primary: #831843;
       --md-sys-color-primary-container: #be185d;

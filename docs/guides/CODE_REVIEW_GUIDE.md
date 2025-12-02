@@ -1,8 +1,8 @@
 ---
-title: OndaCorea - Code Review Guide
+title: OndaCoreana - Code Review Guide
 version: 1.0.0
 status: Approved
-owner: @OndaCorea-team
+owner: @OndaCoreana-team
 created: 2024-11-28
 updated: 2024-11-28
 reviewers: []

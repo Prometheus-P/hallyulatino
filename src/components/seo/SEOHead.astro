@@ -20,15 +20,15 @@ const {
   type = 'website',
   publishedTime,
   modifiedTime,
-  author = 'OndaCorea',
+  author = 'OndaCoreana',
   canonical,
   noindex = false,
 } = Astro.props;
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://ondacorea.com';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://ondacoreana.com';
 const currentUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
-const fullTitle = title.includes('OndaCorea') ? title : `${title} | OndaCorea`;
+const fullTitle = title.includes('OndaCoreana') ? title : `${title} | OndaCoreana`;
 ---
 
 <!-- Primary Meta Tags -->
@@ -52,7 +52,7 @@ const fullTitle = title.includes('OndaCorea') ? title : `${title} | OndaCorea`;
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
 <meta property="og:image:alt" content={imageAlt} />
-<meta property="og:site_name" content="OndaCorea" />
+<meta property="og:site_name" content="OndaCoreana" />
 
 {type === 'article' && publishedTime && (
   <meta property="article:published_time" content={publishedTime.toISOString()} />

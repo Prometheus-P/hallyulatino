@@ -1,13 +1,13 @@
 ---
-title: OndaCorea - README
+title: OndaCoreana - README
 version: 1.0.0
 status: Approved
-owner: @OndaCorea-team
+owner: @OndaCoreana-team
 created: 2024-11-28
 updated: 2024-11-28
 ---
 
-# OndaCorea
+# OndaCoreana
 
 <p align="center">
   <strong>🇰🇷 Tu portal de K-Dramas, K-Pop y cultura coreana en español 🇲🇽</strong>
@@ -24,7 +24,7 @@ updated: 2024-11-28
 
 ## Descripción
 
-**OndaCorea** es un portal de contenido estático optimizado para SEO, diseñado para la comunidad hispanohablante interesada en la cultura coreana. El sitio ofrece reseñas de K-Dramas, perfiles de artistas K-Pop, noticias y guías culturales.
+**OndaCoreana** es un portal de contenido estático optimizado para SEO, diseñado para la comunidad hispanohablante interesada en la cultura coreana. El sitio ofrece reseñas de K-Dramas, perfiles de artistas K-Pop, noticias y guías culturales.
 
 ### Objetivos
 
@@ -59,8 +59,8 @@ updated: 2024-11-28
 
 ```bash
 # Clonar repositorio
-git clone https://github.com/Prometheus-P/ondacorea.git
-cd ondacorea
+git clone https://github.com/Prometheus-P/ondacoreana.git
+cd ondacoreana
 
 # Instalar dependencias
 pnpm install
@@ -85,7 +85,7 @@ El sitio estará disponible en `http://localhost:4321`
 ## Estructura del Proyecto
 
 ```
-📦 ondacorea/
+📦 ondacoreana/
 ├── 📄 CONTEXT.md              # Single Source of Truth
 ├── 📄 README.md               # Este archivo
 ├── 📄 ENVIRONMENT.md          # Configuración de entorno
@@ -176,7 +176,7 @@ description: "Descripción SEO (max 160 chars)"
 pubDate: 2024-01-15
 heroImage: "/images/dramas/nombre.jpg"
 heroImageAlt: "Descripción de la imagen"
-author: "OndaCorea"
+author: "OndaCoreana"
 tags: ["romance", "comedia", "2024"]
 
 # Campos específicos de drama
@@ -289,9 +289,9 @@ MIT License - ver [LICENSE](./LICENSE)
 
 ## Enlaces
 
-- **Producción**: https://ondacorea.com
-- **Repositorio**: https://github.com/Prometheus-P/ondacorea
-- **Issues**: https://github.com/Prometheus-P/ondacorea/issues
+- **Producción**: https://ondacoreana.com
+- **Repositorio**: https://github.com/Prometheus-P/ondacoreana
+- **Issues**: https://github.com/Prometheus-P/ondacoreana/issues
 
 ---
 

@@ -1,8 +1,8 @@
 ---
-title: OndaCorea - Testing Strategy
+title: OndaCoreana - Testing Strategy
 version: 1.0.0
 status: Approved
-owner: "@OndaCorea-team"
+owner: "@OndaCoreana-team"
 created: 2024-11-28
 updated: 2024-11-28
 ---
@@ -15,7 +15,7 @@ updated: 2024-11-28
 |-------|-------|
 | Versión | 1.0.0 |
 | Última actualización | 2024-11-28 |
-| Autor | OndaCorea Team |
+| Autor | OndaCoreana Team |
 | Estado | Activo |
 
 ---
@@ -40,7 +40,7 @@ updated: 2024-11-28
 
 ### 1.1 Principios
 
-Para un sitio estático SSG como OndaCorea, la estrategia de testing se enfoca en:
+Para un sitio estático SSG como OndaCoreana, la estrategia de testing se enfoca en:
 
 | Principio | Descripción |
 |-----------|-------------|
@@ -317,7 +317,7 @@ cat dist/index.html | grep -oP '<script type="application/ld\+json">.*?</script>
 
 ```bash
 # Verificar que sitemap existe y es válido
-curl -s https://ondacorea.com/sitemap-index.xml | head -20
+curl -s https://ondacoreana.com/sitemap-index.xml | head -20
 
 # Validar XML
 xmllint --noout dist/sitemap-index.xml
@@ -332,7 +332,7 @@ cat public/robots.txt
 # Esperado:
 # User-agent: *
 # Allow: /
-# Sitemap: https://ondacorea.com/sitemap-index.xml
+# Sitemap: https://ondacoreana.com/sitemap-index.xml
 ```
 
 ---
@@ -558,7 +558,7 @@ import { test, expect } from '@playwright/test';
 
 test('homepage loads correctly', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle(/OndaCorea/);
+  await expect(page).toHaveTitle(/OndaCoreana/);
   await expect(page.locator('nav')).toBeVisible();
 });
 
@@ -756,7 +756,7 @@ pnpm astro check
 ## After Deploy to Production
 
 ### Verification
-- [ ] Homepage carga (ondacorea.com)
+- [ ] Homepage carga (ondacoreana.com)
 - [ ] SSL certificate válido
 - [ ] Todas las secciones accesibles
 - [ ] Imágenes cargan
@@ -824,4 +824,4 @@ pnpm test:links
 
 ---
 
-*Documento mantenido por el equipo de OndaCorea.*
+*Documento mantenido por el equipo de OndaCoreana.*

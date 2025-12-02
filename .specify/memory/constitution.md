@@ -17,7 +17,7 @@ Templates requiring updates:
 Follow-up TODOs: None
 -->
 
-# OndaCorea Constitution
+# OndaCoreana Constitution
 
 ## Core Principles
 

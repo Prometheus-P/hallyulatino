@@ -7,7 +7,7 @@ import pagefind from 'astro-pagefind';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ondacorea.com',
+  site: 'https://ondacoreana.com',
   output: 'static',
   trailingSlash: 'never',
 
