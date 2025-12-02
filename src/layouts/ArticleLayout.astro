@@ -76,31 +76,31 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('es-419', {
     />
   </Fragment>
 
-  <article class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8" data-pagefind-body>
+  <article class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8" style="padding-top: var(--md-sys-spacing-3xl); padding-bottom: var(--md-sys-spacing-3xl);" data-pagefind-body>
     <!-- Breadcrumbs -->
     {breadcrumbs.length > 0 && (
-      <nav aria-label="Breadcrumb" class="mb-6">
-        <ol class="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+      <nav aria-label="Breadcrumb" style="margin-bottom: var(--md-sys-spacing-lg);">
+        <ol class="flex flex-wrap items-center text-sm" style="gap: var(--md-sys-spacing-sm); color: var(--md-sys-color-on-surface-variant);">
           <li>
-            <a href="/" class="hover:text-pink-600">Inicio</a>
+            <a href="/">Inicio</a>
           </li>
           {breadcrumbs.map((crumb) => (
-            <li class="flex items-center gap-2">
+            <li class="flex items-center" style="gap: var(--md-sys-spacing-sm);">
               <span>/</span>
-              <a href={crumb.url} class="hover:text-pink-600">{crumb.name}</a>
+              <a href={crumb.url}>{crumb.name}</a>
             </li>
           ))}
-          <li class="flex items-center gap-2">
+          <li class="flex items-center" style="gap: var(--md-sys-spacing-sm);">
             <span>/</span>
-            <span class="text-gray-400" aria-current="page">{title}</span>
+            <span style="opacity: 0.6;" aria-current="page">{title}</span>
           </li>
         </ol>
       </nav>
     )}
 
     <!-- Header -->
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl" data-pagefind-meta="title">
+    <header style="margin-bottom: var(--md-sys-spacing-2xl);">
+      <h1 class="text-3xl font-bold sm:text-4xl lg:text-5xl" style="color: var(--md-sys-color-on-surface);" data-pagefind-meta="title">
         {title}
       </h1>
       <span data-pagefind-meta="description" class="hidden">{description}</span>
@@ -108,7 +108,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('es-419', {
       {contentType && <span data-pagefind-meta="contentType" data-pagefind-filter="contentType" class="hidden">{contentType}</span>}
       {heroImage && <span data-pagefind-meta="heroImage" class="hidden">{heroImage}</span>}
 
-      <div class="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-600">
+      <div class="flex flex-wrap items-center text-sm" style="margin-top: var(--md-sys-spacing-md); gap: var(--md-sys-spacing-md); color: var(--md-sys-color-on-surface-variant);">
         <span>Por {author}</span>
         <span>•</span>
         <time datetime={pubDate.toISOString()}>{formattedPubDate}</time>
@@ -121,7 +121,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('es-419', {
       </div>
 
       <!-- Share Buttons -->
-      <div class="mt-4">
+      <div style="margin-top: var(--md-sys-spacing-md);">
         <ShareButtons
           title={title}
           url={`https://ondacorea.com${Astro.url.pathname}`}
@@ -130,9 +130,9 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('es-419', {
       </div>
 
       {tags.length > 0 && (
-        <div class="mt-4 flex flex-wrap gap-2">
+        <div class="flex flex-wrap" style="margin-top: var(--md-sys-spacing-md); gap: var(--md-sys-spacing-sm);">
           {tags.map((tag) => (
-            <span class="inline-flex items-center rounded-full bg-pink-100 px-3 py-1 text-sm font-medium text-pink-800">
+            <span class="inline-flex items-center text-sm font-medium" style="border-radius: var(--md-sys-shape-corner-full); background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); padding: var(--md-sys-spacing-xs) var(--md-sys-spacing-md);">
               {tag}
             </span>
           ))}
@@ -142,11 +142,12 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('es-419', {
 
     <!-- Hero Image -->
     {heroImage && (
-      <figure class="mb-8">
+      <figure style="margin-bottom: var(--md-sys-spacing-2xl);">
         <img
           src={heroImage}
           alt={heroImageAlt}
-          class="w-full rounded-lg object-cover shadow-lg"
+          class="w-full object-cover"
+          style="border-radius: var(--md-sys-shape-corner-large); box-shadow: var(--md-sys-elevation-level2);"
           loading="eager"
           decoding="async"
         />
@@ -154,19 +155,20 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('es-419', {
     )}
 
     <!-- Content -->
-    <div class="prose prose-lg prose-pink mx-auto max-w-none">
+    <div class="prose prose-lg prose-pink mx-auto max-w-none" style="color: var(--md-sys-color-on-surface);">
       <slot />
     </div>
 
     <!-- Tags footer -->
     {tags.length > 0 && (
-      <footer class="mt-12 border-t border-gray-200 pt-8">
-        <h2 class="text-lg font-semibold text-gray-900">Etiquetas</h2>
-        <div class="mt-4 flex flex-wrap gap-2">
+      <footer class="border-t" style="margin-top: var(--md-sys-spacing-3xl); border-color: var(--md-sys-color-outline-variant); padding-top: var(--md-sys-spacing-2xl);">
+        <h2 class="text-lg font-semibold" style="color: var(--md-sys-color-on-surface);">Etiquetas</h2>
+        <div class="flex flex-wrap" style="margin-top: var(--md-sys-spacing-md); gap: var(--md-sys-spacing-sm);">
           {tags.map((tag) => (
             <a
               href={`/etiquetas/${tag.toLowerCase().replace(/\s+/g, '-')}`}
-              class="inline-flex items-center rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-pink-100 hover:text-pink-800 transition-colors"
+              class="inline-flex items-center text-sm font-medium"
+              style="border-radius: var(--md-sys-shape-corner-full); background-color: var(--md-sys-color-surface-variant); color: var(--md-sys-color-on-surface-variant); padding: var(--md-sys-spacing-sm) var(--md-sys-spacing-md); transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);"
             >
               #{tag}
             </a>
