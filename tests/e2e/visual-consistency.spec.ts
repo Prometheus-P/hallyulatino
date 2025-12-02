@@ -85,7 +85,7 @@ test.describe('Visual Consistency - M3 Design System', () => {
     await page.goto('/');
 
     // Check links use primary color (exclude sr-only skip links)
-    const link = page.locator('nav a[href], main a[href]').first();
+    const link = page.locator('nav a[href]:visible, main a[href]:visible').first();
     await link.waitFor({ state: 'visible' });
 
     const linkColor = await link.evaluate((el) => {
@@ -95,7 +95,7 @@ test.describe('Visual Consistency - M3 Design System', () => {
     expect(linkColor).toBeTruthy();
 
     // Check hover state exists
-    await link.hover();
+    await link.hover({ force: false });
     const linkHoverColor = await link.evaluate((el) => {
       return window.getComputedStyle(el).color;
     });
@@ -174,10 +174,10 @@ test.describe('Visual Consistency - M3 Design System', () => {
   });
 
   test('consistent spacing between elements across pages', async ({ page }) => {
-    // Test homepage spacing
+    // Test homepage spacing on article container
     await page.goto('/');
-    const homeMain = page.locator('main').first();
-    const homeSpacing = await homeMain.evaluate((el) => {
+    const homeArticle = page.locator('article, main > div, main > section').first();
+    const homeSpacing = await homeArticle.evaluate((el) => {
       const styles = window.getComputedStyle(el);
       return {
         paddingTop: parseFloat(styles.paddingTop),
@@ -189,8 +189,8 @@ test.describe('Visual Consistency - M3 Design System', () => {
 
     // Navigate to article page
     await page.goto('/dramas/squid-game');
-    const articleMain = page.locator('main').first();
-    const articleSpacing = await articleMain.evaluate((el) => {
+    const articleContainer = page.locator('article').first();
+    const articleSpacing = await articleContainer.evaluate((el) => {
       const styles = window.getComputedStyle(el);
       return {
         paddingTop: parseFloat(styles.paddingTop),
@@ -200,14 +200,17 @@ test.describe('Visual Consistency - M3 Design System', () => {
       };
     });
 
-    // At least some spacing should exist (padding or margin)
+    // Verify spacing values are defined (not NaN or 0)
+    expect(articleSpacing.paddingTop + articleSpacing.paddingBottom).toBeGreaterThan(0);
+
+    // At least some spacing should exist on both pages
     const homeTotalSpacing = homeSpacing.paddingTop + homeSpacing.paddingBottom +
                              homeSpacing.marginTop + homeSpacing.marginBottom;
     const articleTotalSpacing = articleSpacing.paddingTop + articleSpacing.paddingBottom +
                                 articleSpacing.marginTop + articleSpacing.marginBottom;
 
     expect(homeTotalSpacing).toBeGreaterThanOrEqual(0);
-    expect(articleTotalSpacing).toBeGreaterThanOrEqual(0);
+    expect(articleTotalSpacing).toBeGreaterThan(0);
   });
 
   test('dark mode colors respond to prefers-color-scheme', async ({ page, browser }) => {
