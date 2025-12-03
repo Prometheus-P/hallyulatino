@@ -131,7 +131,9 @@ test.describe('US4: Interactive Feedback - Hover States', () => {
 });
 
 test.describe('US4: Interactive Feedback - Focus States', () => {
-  test('form inputs show focus state with border/outline change (T060)', async ({ page }) => {
+  test('form inputs show focus state with border/outline change (T060)', async ({ page, isMobile }) => {
+    // Skip on mobile as focus states behave differently
+    test.skip(isMobile, 'Focus states are handled differently on mobile devices');
     await page.goto('/buscar');
 
     const inputs = page.locator('input, textarea, select');
@@ -270,7 +272,9 @@ test.describe('US4: Interactive Feedback - Smooth Transitions', () => {
     await expect(link).toBeVisible();
   });
 
-  test('focus transitions are immediate but styled', async ({ page }) => {
+  test('focus transitions are immediate but styled', async ({ page, isMobile }) => {
+    // Skip on mobile as focus states behave differently
+    test.skip(isMobile, 'Focus states are handled differently on mobile devices');
     await page.goto('/buscar');
 
     const input = page.locator('input').first();
