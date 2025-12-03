@@ -1,7 +1,7 @@
 # Implementation Plan: LatAm Content Admin & AI Design Assistant
 
-**Branch**: `002-latam-admin` | **Date**: 2024-12-03 | **Spec**: `specs/002-latam-admin/spec.md`  
-**Input**: Feature specification from `/specs/002-latam-admin/spec.md`
+**Branch**: `003-latam-admin` | **Date**: 2024-12-03 | **Spec**: `specs/003-latam-admin/spec.md`  
+**Input**: Feature specification from `/specs/003-latam-admin/spec.md`
 
 ## Summary
 
@@ -28,7 +28,7 @@ Build an admin console for OndaCoreana to publish Spanish-first, LatAm-relevant 
 ## Project Structure
 
 ```text
-specs/002-latam-admin/
+specs/003-latam-admin/
 ├── spec.md
 ├── plan.md
 ├── tasks.md

@@ -1,6 +1,6 @@
 # Tasks: LatAm Content Admin & AI Design Assistant
 
-**Input**: Design docs from `/specs/002-latam-admin/`
+**Input**: Design docs from `/specs/003-latam-admin/`
 **Prerequisites**: plan.md (required), spec.md (required), research.md (LatAm audience insights), data-model.md, contracts/ (if AI agent contract exists)
 
 **Tests**: Playwright E2E is REQUIRED (TDD mandate). Write tests first, verify they fail, then implement.

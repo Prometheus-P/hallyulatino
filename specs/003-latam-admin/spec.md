@@ -1,6 +1,6 @@
 # Feature Specification: LatAm Content Admin & AI Design Assistant
 
-**Feature Branch**: `002-latam-admin`  
+**Feature Branch**: `003-latam-admin`  
 **Created**: 2024-12-03  
 **Status**: Draft  
 **Input**: Admin console for OndaCoreana to publish LatAm-relevant content with AI design support
