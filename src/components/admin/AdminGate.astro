@@ -1,0 +1,126 @@
+---
+const accessCode = import.meta.env.PUBLIC_ADMIN_ACCESS_CODE || '';
+const redirectPath = Astro.props.redirect ?? '/admin/features';
+---
+
+<div class="card" id="admin-gate">
+  <h2>Acceso administrador</h2>
+  <p class="muted">Ingresa el código para continuar.</p>
+  <form id="admin-gate-form">
+    <label>
+      Código de acceso
+      <input type="password" name="code" required placeholder="••••••" />
+    </label>
+    <button type="submit">Desbloquear</button>
+    <p class="error" hidden id="gate-error">Código inválido. Intenta de nuevo.</p>
+  </form>
+  <button type="button" id="logout-btn" hidden>Salir</button>
+  <div id="admin-slot" hidden>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .card {
+    background: #121a30;
+    border: 1px solid #1f2a44;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  h2 {
+    margin: 0 0 8px 0;
+  }
+  .muted {
+    color: #9ba3b5;
+    margin-top: 0;
+  }
+  form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #c7d0e5;
+  }
+  input {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #1f2a44;
+    background: #0c1427;
+    color: #e8ecf5;
+    min-width: 200px;
+  }
+  button {
+    background: linear-gradient(120deg, #9b87f5, #5dd39e);
+    color: #0b1021;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .error {
+    color: #ff7787;
+    font-size: 14px;
+    margin: 0;
+  }
+</style>
+
+<script>
+  const code = '{accessCode}';
+  const redirect = '{redirectPath}';
+  const SESSION_KEY = 'oc-admin-session';
+
+  const gate = document.getElementById('admin-gate');
+  const form = document.getElementById('admin-gate-form');
+  const slot = document.getElementById('admin-slot');
+  const error = document.getElementById('gate-error');
+  const logout = document.getElementById('logout-btn');
+
+  const unlock = () => {
+    if (!slot) return;
+    form?.setAttribute('hidden', 'true');
+    logout?.removeAttribute('hidden');
+    error?.setAttribute('hidden', 'true');
+    slot.removeAttribute('hidden');
+  };
+
+  const lock = () => {
+    form?.removeAttribute('hidden');
+    logout?.setAttribute('hidden', 'true');
+    slot?.setAttribute('hidden', 'true');
+    if (error) error.setAttribute('hidden', 'true');
+  };
+
+  const stored = window.localStorage.getItem(SESSION_KEY);
+  if (stored === code && code) {
+    unlock();
+    if (redirect && window.location.pathname === '/admin') {
+      window.location.href = redirect;
+    }
+  }
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const value = (formData.get('code') || '').toString().trim();
+    if (value === code && code) {
+      window.localStorage.setItem(SESSION_KEY, value);
+      unlock();
+      if (redirect && window.location.pathname === '/admin') {
+        window.location.href = redirect;
+      }
+      return;
+    }
+    error?.removeAttribute('hidden');
+  });
+
+  logout?.addEventListener('click', () => {
+    window.localStorage.removeItem(SESSION_KEY);
+    lock();
+  });
+</script>

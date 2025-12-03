@@ -59,9 +59,44 @@ const guias = defineCollection({
   }),
 });
 
+// Colección: Features (contenido editorial enfocado en LatAm)
+const features = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string().min(3).max(80),
+    descriptionEs: z.string().max(180),
+    category: z.enum(['music', 'series', 'event', 'gastronomy', 'culture']).default('culture'),
+    countries: z.array(z.string()).min(1, 'Incluye al menos un país de LatAm'),
+    latamHook: z.array(z.string()).min(1, 'Añade al menos un gancho para LatAm'),
+    heroImage: z.string().optional(),
+    heroImageAlt: z.string().optional(),
+    publishDate: z.coerce.date(),
+    author: z.string().default('OndaCoreana'),
+    tags: z.array(z.string()).default([]),
+    blocks: z
+      .array(
+        z.object({
+          heading: z.string().optional(),
+          body: z.string(),
+        })
+      )
+      .default([]),
+    seoMeta: z
+      .object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        canonical: z.string().optional(),
+        ogImage: z.string().optional(),
+      })
+      .optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   dramas,
   kpop,
   noticias,
   guias,
+  features,
 };
