@@ -243,3 +243,62 @@
     --md-motion-duration-long: 0ms;
   }
 }
+
+/* ============================================
+   LEGACY TOKEN ALIASES (Backward Compatibility)
+   Maps old --md-sys-* tokens to new --md-* tokens
+   ============================================ */
+
+:root {
+  /* Color aliases */
+  --md-sys-color-primary: var(--md-color-primary);
+  --md-sys-color-on-primary: var(--md-color-on-primary);
+  --md-sys-color-primary-container: var(--md-color-primary-container);
+  --md-sys-color-on-primary-container: var(--md-color-on-primary-container);
+  --md-sys-color-surface: var(--md-color-surface);
+  --md-sys-color-on-surface: var(--md-color-on-surface);
+  --md-sys-color-surface-variant: var(--md-color-surface-variant);
+  --md-sys-color-on-surface-variant: var(--md-color-on-surface-variant);
+  --md-sys-color-outline: var(--md-color-outline);
+  --md-sys-color-outline-variant: var(--md-color-outline-variant);
+  --md-sys-color-surface-container: var(--md-color-surface-container);
+  --md-sys-color-surface-container-high: var(--md-color-surface-container-high);
+  --md-sys-color-surface-container-low: var(--md-color-surface-container-low);
+  --md-sys-color-error: var(--md-color-error);
+  --md-sys-color-on-error: var(--md-color-on-error);
+  --md-sys-color-background: var(--md-color-surface);
+  --md-sys-color-on-background: var(--md-color-on-surface);
+
+  /* Spacing aliases */
+  --md-sys-spacing-xs: var(--md-spacing-xs);
+  --md-sys-spacing-sm: var(--md-spacing-sm);
+  --md-sys-spacing-md: var(--md-spacing-md);
+  --md-sys-spacing-lg: var(--md-spacing-lg);
+  --md-sys-spacing-xl: var(--md-spacing-xl);
+  --md-sys-spacing-2xl: var(--md-spacing-2xl);
+  --md-sys-spacing-3xl: var(--md-spacing-3xl);
+
+  /* Motion aliases */
+  --md-sys-motion-duration-short: var(--md-motion-duration-short);
+  --md-sys-motion-duration-medium: var(--md-motion-duration-medium);
+  --md-sys-motion-duration-long: var(--md-motion-duration-long);
+
+  /* State aliases */
+  --md-sys-state-hover-opacity: var(--md-state-hover-opacity);
+  --md-sys-state-focus-opacity: var(--md-state-focus-opacity);
+  --md-sys-state-pressed-opacity: var(--md-state-pressed-opacity);
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+
+/* Navigation Links */
+.nav-link {
+  color: var(--md-color-on-surface-variant);
+  transition: color var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+
+.nav-link:hover {
+  color: var(--md-color-primary);
+}
